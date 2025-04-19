@@ -2,14 +2,18 @@
   width: 400px;
   padding: 50px;
   border: 1px solid #dedede;
+
+  .title {
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 30px;
+
+    &.MuiTypography-root {
+      font-weight: 700;
+    }
+  }
 }
 
-.field {
-  margin-bottom: 20px !important;
-}
-
-.title {
-  text-align: center !important;
-  font-weight: bold !important;
-  margin-bottom: 30px !important;
+.fieldContainer {
+  margin-bottom: 20px;
 }
