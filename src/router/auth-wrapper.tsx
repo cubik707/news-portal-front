@@ -6,14 +6,22 @@ import { useVerifyTokenQuery } from '../features/auth/api/auth-api.ts';
 
 interface AuthWrapperProps {
   children: ReactNode;
+  shouldRedirectIfLoggedIn?: boolean;
 }
 
-export const AuthWrapper = ({ children }: AuthWrapperProps) => {
-  const isLoggedIn  = useSelector(selectIsLoggedIn);
-  const {isError} = useVerifyTokenQuery();
+export const AuthWrapper = ({ children, shouldRedirectIfLoggedIn = true }: AuthWrapperProps) => {
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const { isError, isLoading } = useVerifyTokenQuery();
+
+  if (isLoading) return <div>Loading...</div>;
 
   if (!isLoggedIn || isError) {
-    return <Navigate to='/login' replace />;
+    return shouldRedirectIfLoggedIn ? <Navigate to="/login" replace /> : children;
+  }
+
+  // Если пользователь авторизован, но находится на /login — редирект на главную
+  if (!shouldRedirectIfLoggedIn && isLoggedIn) {
+    return <Navigate to="/" replace />;
   }
 
   return children;

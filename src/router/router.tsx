@@ -16,7 +16,7 @@ export const router = createBrowserRouter([
       {
         path: '/',
         element: (
-          <AuthWrapper>
+          <AuthWrapper shouldRedirectIfLoggedIn={false}>
             <MainPage />
           </AuthWrapper>
         ),

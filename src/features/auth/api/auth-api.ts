@@ -1,6 +1,5 @@
 import { baseApi } from '../../../app/base-api.ts';
 import { SuccessResponse } from '../../../common/types';
-
 import { LoginArgs } from './auth-api.types.ts';
 import { HttpMethod } from '../../../common/enums';
 import { User } from '../../user/types/user.types.ts';
@@ -11,7 +10,7 @@ export const authApi = baseApi.injectEndpoints({
       query: payload => {
         return {
           method: HttpMethod.POST,
-          url: '/login',
+          url: '/auth',
           body: payload,
         };
       },

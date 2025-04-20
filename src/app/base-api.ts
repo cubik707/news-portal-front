@@ -3,7 +3,7 @@ import { authTokenManager } from '../features/auth/lib/auth-token-manager.ts';
 import { setIsLoggedIn } from './app-slice.ts';
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: import.meta.env.VITE_API_URL,
+  baseUrl: import.meta.env.VITE_API_BASE_URL,
   prepareHeaders: (headers) => {
     const token = localStorage.getItem('token');
     if (token) headers.set('Authorization', `Bearer ${token}`);
