@@ -4,6 +4,7 @@ import styles from './login-page.module.scss';
 
 
 const LoginPage = () => {
+  console.log(import.meta.env.VITE_API_BASE_URL)
   return (
     <div className={'flex justify-center items-center h-full'}>
       <Paper classes={{ root: styles.root }}>
