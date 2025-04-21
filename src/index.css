@@ -2,14 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
+html, body {
+  height: 100%;
   margin: 0;
+  padding: 0;
+}
+
+body {
   font-family: 'Roboto', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #F5F5F5 !important;
+  & > #root {
+    height: 100vh;
+    max-width: 100vw;
+    padding: 0;
+  }
 }
 
-#root {
-  height: 100vh;
-}

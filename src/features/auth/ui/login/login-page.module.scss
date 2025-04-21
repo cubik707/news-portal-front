@@ -1,0 +1,19 @@
+.root {
+  width: 400px;
+  padding: 50px;
+  border: 1px solid #dedede;
+
+  .title {
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 30px;
+
+    &.MuiTypography-root {
+      font-weight: 700;
+    }
+  }
+}
+
+.fieldContainer {
+  margin-bottom: 20px;
+}
