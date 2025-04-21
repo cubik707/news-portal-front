@@ -3,6 +3,7 @@ import App from '../app/App.tsx';
 import MainPage from '../pages/main-page/main-page.tsx';
 import LoginPage from '../features/auth/ui/login/login-page.tsx';
 import { ProtectedLayout } from './protected-layout.tsx';
+import RegisterPage from '../features/auth/ui/register/register-page.tsx';
 
 export const router = createBrowserRouter([
   {
@@ -12,6 +13,10 @@ export const router = createBrowserRouter([
       {
         path: '/login',
         element: <LoginPage />,
+      },
+      {
+        path: '/register',
+        element: <RegisterPage/>
       },
       {
         element: <ProtectedLayout />,
