@@ -1,4 +1,4 @@
-import { Button, Paper, TextField, Typography } from '@mui/material';
+import { Button, LinearProgress, Link, Paper, TextField, Typography } from '@mui/material';
 import styles from './login-page.module.scss';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -19,7 +19,7 @@ const schema = yup.object().shape({
 
 const LoginPage = () => {
   const isLoggedIn = useAppSelector(selectIsLoggedIn)
-  const [login] = useLoginMutation();
+  const [login, {isLoading}] = useLoginMutation();
   const dispatch = useAppDispatch()
   const [loginError, setLoginError] = useState<string | null>(null);
 
@@ -59,6 +59,18 @@ const LoginPage = () => {
 
   return (
     <div className="flex justify-center items-center h-full">
+      {isLoading && (
+        <LinearProgress
+          sx={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            zIndex: 9999,
+          }}
+        />
+      )}
+
       <Paper classes={{ root: styles.root }}>
         <Typography classes={{ root: styles.title }} variant="h5">
           Вход в аккаунт
@@ -104,9 +116,23 @@ const LoginPage = () => {
             </Typography>
           )}
 
-          <Button type="submit" size="large" variant="contained" fullWidth>
+          <Button
+            type="submit"
+            size="large"
+            variant="contained"
+            fullWidth
+            disabled={isLoading}
+          >
             Войти
           </Button>
+
+
+          <Typography sx={{ mt: 2, textAlign: 'center' }}>
+            Нет аккаунта?{' '}
+            <Link href="/register" underline="hover">
+              Зарегистрируйтесь
+            </Link>
+          </Typography>
         </form>
       </Paper>
     </div>

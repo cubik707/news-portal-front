@@ -20,6 +20,7 @@ export const authApi = baseApi.injectEndpoints({
         method: HttpMethod.GET,
         url: '/verify-token',
       }),
+      keepUnusedDataFor: 300
     }),
     me: builder.query<SuccessResponse<User>, void>({
       query: () => '/me',
