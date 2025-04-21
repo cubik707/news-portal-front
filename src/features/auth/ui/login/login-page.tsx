@@ -13,14 +13,26 @@ import { authTokenManager } from '../../lib/auth-token-manager.ts';
 import { ErrorResponse } from '../../../../common/types';
 
 const schema = yup.object().shape({
-  username: yup.string().required('Имя пользователя обязательно'),
-  password: yup.string().required('Пароль обязателен').min(6, 'Минимум 6 символов'),
+  username: yup
+    .string()
+    .required('Имя пользователя обязательно')
+    .min(3, 'Минимум 3 символа')
+    .max(20, 'Максимум 20 символов')
+    .matches(
+      /^[a-zA-Z0-9_]+$/,
+      'Только латинские буквы, цифры и подчеркивание'
+    ),
+  password: yup
+    .string()
+    .required('Пароль обязателен')
+    .min(6, 'Минимум 6 символов')
+    .max(30, 'Максимум 30 символов'),
 });
 
 const LoginPage = () => {
   const isLoggedIn = useAppSelector(selectIsLoggedIn)
   const [login, {isLoading}] = useLoginMutation();
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const [loginError, setLoginError] = useState<string | null>(null);
 
   const {
@@ -42,7 +54,6 @@ const LoginPage = () => {
       dispatch(setIsLoggedIn({ isLoggedIn: true }));
       authTokenManager.setAccessToken(res.data.token);
     } catch (err: any) {
-      console.error('Login error:', err);
       const errorData = err as { data?: ErrorResponse };
 
       setLoginError(
