@@ -11,3 +11,8 @@ export type User = {
   department: string;
   roles: UserRole[];
 };
+
+export type UserForNews = {
+  fullName: string;
+  avatarUrl?: string;
+};
