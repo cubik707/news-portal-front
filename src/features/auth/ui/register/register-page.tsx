@@ -11,16 +11,13 @@ import {
   Typography,
 } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
-import { useAppDispatch, useAppSelector } from '../../../../common/hooks';
-import { selectIsLoggedIn, setIsLoggedIn } from '../../../../app/app-slice.ts';
 import { useState } from 'react';
 import { useRegisterMutation } from '../../api/auth-api.ts';
 import * as yup from 'yup';
 import { RegisterArgs } from '../../api/auth-api.types.ts';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { authTokenManager } from '../../lib/auth-token-manager.ts';
 import { ErrorResponse } from '../../../../common/types';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const schema = yup.object().shape({
   username: yup
@@ -87,10 +84,9 @@ const schema = yup.object().shape({
 });
 
 const RegisterPage = () => {
-  const isLoggedIn = useAppSelector(selectIsLoggedIn);
-  const dispatch = useAppDispatch();
   const [register, { isLoading }] = useRegisterMutation();
   const [registerError, setRegisterError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const {
     control,
@@ -120,8 +116,8 @@ const RegisterPage = () => {
         surname: data.surname || '',
       };
       const res = await register(submitData).unwrap();
-      dispatch(setIsLoggedIn({ isLoggedIn: true }));
-      authTokenManager.setAccessToken(res.data.token);
+      alert(res.data)
+      navigate('/login');
     } catch (err: any) {
       const errorData = err as { data?: ErrorResponse };
 
@@ -132,10 +128,6 @@ const RegisterPage = () => {
       reset({ ...data, password: '' });
     }
   };
-
-  if (isLoggedIn) {
-    return <Navigate to="/" />;
-  }
 
   return (
     <div className="flex justify-center items-center h-full p-8">

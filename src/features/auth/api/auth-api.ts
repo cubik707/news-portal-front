@@ -15,7 +15,7 @@ export const authApi = baseApi.injectEndpoints({
         };
       },
     }),
-    register: builder.mutation<SuccessResponse<{ token: string }>, RegisterArgs>({
+    register: builder.mutation<SuccessResponse<string>, RegisterArgs>({
       query: payload => {
         return {
           method: HttpMethod.POST,
