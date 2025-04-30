@@ -16,3 +16,5 @@ export type UserForNews = {
   fullName: string;
   avatarUrl?: string;
 };
+
+export type UserWithoutRoles = Omit<User, 'roles'>;

@@ -20,3 +20,7 @@ body {
   }
 }
 
+:root {
+  --header-height: 64px;
+}
+

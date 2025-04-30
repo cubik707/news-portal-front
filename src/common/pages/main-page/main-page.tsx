@@ -5,7 +5,7 @@ import News from '../../../features/news/ui';
 import { TagsBlock } from '../../../features/tags/ui/tags-block.tsx';
 import { CommentsBlock } from '../../../features/comments/ui/comments-block.tsx';
 import { Container } from '@mui/material';
-import { Header } from '../../components/header.tsx';
+import { Header } from '../../components/header/header.tsx';
 
 const MainPage = () => {
   return (

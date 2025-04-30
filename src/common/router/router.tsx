@@ -5,6 +5,8 @@ import LoginPage from '../../features/auth/ui/login/login-page.tsx';
 import { ProtectedLayout } from './protected-layout.tsx';
 import RegisterPage from '../../features/auth/ui/register/register-page.tsx';
 import { Page404 } from '../pages/page-404/page-404.tsx';
+import { AccountPage } from '../pages/account-page/account-page.tsx';
+import ProfileLayout from '../pages/account-page/ui/profile-layout.tsx';
 
 export const router = createBrowserRouter([
   {
@@ -25,7 +27,17 @@ export const router = createBrowserRouter([
           {
             index: true,
             element: <MainPage />
-          }
+          },
+          {
+            path: 'account',
+            element: <AccountPage/>,
+            children: [
+              {
+                path: 'profile',
+                element: <ProfileLayout/>
+              }
+            ]
+          },
         ]
       },
       {
