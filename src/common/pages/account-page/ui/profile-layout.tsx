@@ -1,22 +1,20 @@
 import { UserProfile } from '../../../../features/userProfile/ui/user-profile.tsx';
 import { ChangeRequestForm } from '../../../../features/userProfile/ui/change-request-form.tsx';
+import { useUser } from '../../../context/user-context.tsx';
+import { UserRole } from '../../../../features/user/types/user-role.enum.ts';
 
-/*const dummyUser = {
-  id: 1,
-  username: 'lolkek',
-  lastName: 'Иванов',
-  firstName: 'Иван',
-  surname: 'Иванович',
-  email: 'ivan@example.com',
-  department: 'ИТ',
-  position: 'Разработчик',
-};*/
 
 const ProfileLayout = () => {
+  const { user, isLoading } = useUser();
+
+  const isAdmin = user?.roles.includes(UserRole.ADMIN) ?? null;
+
   return (
     <>
-      <UserProfile />
-      <ChangeRequestForm onSubmit={(data) => alert(JSON.stringify(data))} />
+      <UserProfile user={user} isLoading={isLoading} isAdmin={isAdmin} />
+      {!isAdmin && (
+        <ChangeRequestForm onSubmit={(data) => alert(JSON.stringify(data))} />
+      )}
     </>
   );
 };
