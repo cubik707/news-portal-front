@@ -1,41 +1,63 @@
 import UserList from '../../../../features/user/ui/user-list/user-list.tsx';
-import { User } from '../../../../features/user/types/user.types.ts';
 import { UserRole } from '../../../../features/user/types/user-role.enum.ts';
 import { useState } from 'react';
-import { Pagination, Box } from '@mui/material';
+import { Box, Pagination } from '@mui/material';
+import {
+  useApproveUserMutation,
+  useAssignRoleMutation, useDeleteUserMutation,
+  useGetUsersQuery, useRemoveRoleMutation,
+} from '../../../../features/user/api/userApi.ts';
+import { useAppDispatch } from '../../../hooks';
+import { setAppError } from '../../../../app/app-slice.ts';
 
 const USERS_PER_PAGE = 6;
 
-const initialUsers: User[] = [
-  { id: 1, username: 'jdoe', email: 'jdoe@example.com', lastName: 'Doe', firstName: 'John', position: 'Developer', department: 'IT', roles: [UserRole.USER], approved: false },
-  { id: 2, username: 'jdoe', email: 'jdoe@example.com', lastName: 'Doe', firstName: 'John', position: 'Developer', department: 'IT', roles: [UserRole.USER, UserRole.EDITOR], approved: true },
-  { id: 3, username: 'jdoe', email: 'jdoe@example.com', lastName: 'Doe', firstName: 'John', position: 'Developer', department: 'IT', roles: [UserRole.USER, UserRole.ADMIN], approved: true },
-  { id: 4, username: 'jdoe', email: 'jdoe@example.com', lastName: 'Doe', firstName: 'John', position: 'Developer', department: 'IT', roles: [UserRole.USER, UserRole.EDITOR], approved: true },
-  { id: 5, username: 'jdoe', email: 'jdoe@example.com', lastName: 'Doe', firstName: 'John', position: 'Developer', department: 'IT', roles: [UserRole.USER], approved: true },
-  { id: 6, username: 'jdoe', email: 'jdoe@example.com', lastName: 'Doe', firstName: 'John', position: 'Developer', department: 'IT', roles: [UserRole.USER], approved: true },
-  { id: 7, username: 'jdoe', email: 'jdoe@example.com', lastName: 'Doe', firstName: 'John', position: 'Developer', department: 'IT', roles: [UserRole.USER], approved: true },
-];
-
 const UserManagementLayout = () => {
-  const [users, setUsers] = useState<User[]>(initialUsers);
+  const { data, refetch } = useGetUsersQuery();
+  const users = data?.data || [];
   const [page, setPage] = useState<number>(1);
+  const dispatch = useAppDispatch();
 
-  const handleApprove = (userId: number) => {
-    setUsers(users.map(user =>
-      user.id === userId ? { ...user, approved: !user.approved } : user
-    ));
+  const [approveUser] = useApproveUserMutation();
+  const [assignRole] = useAssignRoleMutation();
+  const [removeRole] = useRemoveRoleMutation();
+  const [deleteUser] = useDeleteUserMutation();
+
+  const handleApprove = async (userId: number) => {
+    try {
+      await approveUser(userId).unwrap();
+      await refetch();
+    } catch (error: any) {
+      const message =
+        error?.data?.message || error?.error || 'Произошла ошибка при одобрении пользователя';
+      dispatch(setAppError({ error: message }));
+    }
   };
 
-  const handleRoleChange = (userId: number, role: UserRole, checked: boolean) => {
-    setUsers(users.map(user => {
-      if (user.id === userId) {
-        const roles = checked
-          ? [...user.roles, role]
-          : user.roles.filter(r => r !== role);
-        return { ...user, roles };
+    const handleDisapprove = async (userId: number) => {
+    try {
+      await deleteUser(userId).unwrap();
+      await refetch();
+    } catch (error: any) {
+      const message =
+        error?.data?.message || error?.error || 'Произошла ошибка при удалении пользователя';
+      dispatch(setAppError({ error: message }));
+    }
+  }
+
+  const handleRoleChange = async (userId: number, role: UserRole, checked: boolean) => {
+    try {
+      if (checked) {
+        await assignRole({ id: userId, role: { role } }).unwrap();
+      } else {
+        await removeRole({ id: userId, role: { role } }).unwrap();
       }
-      return user;
-    }));
+      await refetch(); // обновим список пользователей после изменения роли
+    } catch (error: any) {
+      const message =
+        error?.data?.message || error?.error || 'Ошибка при изменении роли пользователя';
+      dispatch(setAppError({ error: message }));
+    }
   };
 
   const handlePageChange = (_: any, newPage: number) => {
@@ -54,6 +76,7 @@ const UserManagementLayout = () => {
       <UserList
         users={paginatedUsers}
         onApprove={handleApprove}
+        onDisapprove={handleDisapprove}
         onRoleChange={handleRoleChange}
       />
       <Box display="flex" justifyContent="center" mt={4}>

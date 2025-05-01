@@ -8,10 +8,11 @@ import { UserCard } from '../user-card/user-card.tsx';
 interface UserListProps {
   users: User[];
   onApprove: (userId: number) => void;
+  onDisapprove: (userId: number) => void;
   onRoleChange: (userId: number, role: UserRole, checked: boolean) => void;
 }
 
-const UserList: React.FC<UserListProps> = ({ users, onApprove, onRoleChange }) => {
+const UserList: React.FC<UserListProps> = ({ users, onApprove, onDisapprove, onRoleChange }) => {
   return (
     <Grid container spacing={3}>
       {users.map((user) => (
@@ -19,6 +20,7 @@ const UserList: React.FC<UserListProps> = ({ users, onApprove, onRoleChange }) =
           <UserCard
             user={user}
             onApprove={onApprove}
+            onDisapprove={onDisapprove}
             onRoleChange={onRoleChange}
           />
         </Grid>

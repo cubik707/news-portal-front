@@ -15,7 +15,7 @@ import {
 import { User, UserFieldObject } from '../../types/user.types.ts';
 import { UserRole } from '../../types/user-role.enum.ts';
 import { EditableSpan } from '../../../../common/components/editable-span/editable-span.tsx';
-import { useUpdateUserFieldMutation } from '../../api/userApi.ts';
+import { useGetUsersQuery, useUpdateUserFieldMutation } from '../../api/userApi.ts';
 import { useAppDispatch } from '../../../../common/hooks';
 import { setAppError } from '../../../../app/app-slice.ts';
 
@@ -23,11 +23,13 @@ import { setAppError } from '../../../../app/app-slice.ts';
 interface UserCardProps {
   user: User;
   onApprove: (userId: number) => void;
+  onDisapprove: (userId: number) => void;
   onRoleChange: (userId: number, role: UserRole, checked: boolean) => void;
 }
 
-export const UserCard: React.FC<UserCardProps> = ({ user, onApprove, onRoleChange }) => {
+export const UserCard: React.FC<UserCardProps> = ({ user, onApprove, onDisapprove, onRoleChange }) => {
   const [updateUserField] = useUpdateUserFieldMutation();
+  const {refetch} = useGetUsersQuery()
   const dispatch = useAppDispatch();
 
   const handleSaveField = async (field: keyof UserFieldObject, value: string) => {
@@ -36,6 +38,7 @@ export const UserCard: React.FC<UserCardProps> = ({ user, onApprove, onRoleChang
 
     try {
       await updateUserField({ id: user.id, userFiled }).unwrap();
+      await refetch();
     } catch (error: any) {
       const message =
         error?.data?.message || error?.error || 'Произошла ошибка при обновлении пользователя';
@@ -64,9 +67,9 @@ export const UserCard: React.FC<UserCardProps> = ({ user, onApprove, onRoleChang
               '& .MuiTypography-body1': {
                 fontSize: '0.875rem',
               },
-              '& > *': {
-                minHeight: '20px'
-              }
+              '& * ': {
+                minHeight: '20px !important',
+              },
             }}
           >
 
@@ -89,17 +92,17 @@ export const UserCard: React.FC<UserCardProps> = ({ user, onApprove, onRoleChang
           </Box>
         }
         subheader={
-          <Box  sx={{
+          <Box sx={{
             mt: 0.5,
             '& .MuiTypography-root': {
               color: 'text.secondary',
-              fontSize: '0.875rem'
-            }
+              fontSize: '0.875rem',
+            },
           }}>
             <EditableSpan
               value={user.position}
               onChange={(v) => handleSaveField('position', v)}
-              isAdmin={true}/>
+              isAdmin={true} />
           </Box>
         }
       />
@@ -144,7 +147,6 @@ export const UserCard: React.FC<UserCardProps> = ({ user, onApprove, onRoleChang
           </Box>
         </Box>
 
-
         <FormGroup sx={{ mt: 2 }}>
           <Typography variant="subtitle1"> <strong>Роли:</strong> </Typography>
           {Object.values(UserRole).map((role) => (
@@ -165,7 +167,7 @@ export const UserCard: React.FC<UserCardProps> = ({ user, onApprove, onRoleChang
         {user.approved ? (
           <Button
             color={'error'}
-            onClick={() => onApprove(user.id)}
+            onClick={() => onDisapprove(user.id)}
             sx={{
               mt: 2,
               textTransform: 'none',
@@ -195,7 +197,7 @@ export const UserCard: React.FC<UserCardProps> = ({ user, onApprove, onRoleChang
             </Button>
             <Button
               color={'error'}
-              onClick={() => onApprove(user.id)}
+              onClick={() => onDisapprove(user.id)}
               sx={{
                 mt: 2,
                 textTransform: 'none',

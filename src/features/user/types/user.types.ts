@@ -18,7 +18,9 @@ export type UserForNews = {
   avatarUrl?: string;
 };
 
-export type UserWithoutRoles = Omit<User, 'roles'>;
+export type RoleObj = {
+  role: UserRole;
+}
 
 export type UserFieldObject = Partial<
   Pick<User, Exclude<keyof User, 'id' | 'roles' | 'approved'>>
