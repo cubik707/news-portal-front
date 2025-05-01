@@ -13,10 +13,18 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #F5F5F5 !important;
+  min-height: 100vh;
   & > #root {
+    min-height: 100vh;
     height: 100vh;
     max-width: 100vw;
     padding: 0;
+    display: flex;
+    flex-direction: column;
   }
+}
+
+:root {
+  --header-height: 64px;
 }
 

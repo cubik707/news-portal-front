@@ -11,86 +11,20 @@ import {
   Typography,
 } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
-import { useAppDispatch, useAppSelector } from '../../../../common/hooks';
-import { selectIsLoggedIn, setIsLoggedIn } from '../../../../app/app-slice.ts';
 import { useState } from 'react';
 import { useRegisterMutation } from '../../api/auth-api.ts';
-import * as yup from 'yup';
 import { RegisterArgs } from '../../api/auth-api.types.ts';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { authTokenManager } from '../../lib/auth-token-manager.ts';
 import { ErrorResponse } from '../../../../common/types';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import registerSchema from '../../model/register-schema.ts';
 
-const schema = yup.object().shape({
-  username: yup
-    .string()
-    .required('Имя пользователя обязательно')
-    .min(3, 'Минимум 3 символа')
-    .max(20, 'Максимум 20 символов')
-    .matches(
-      /^[a-zA-Z0-9_]+$/,
-      'Только латинские буквы, цифры и подчеркивание',
-    ),
 
-  password: yup
-    .string()
-    .required('Пароль обязателен')
-    .min(6, 'Минимум 6 символов')
-    .max(30, 'Максимум 30 символов'),
-
-  email: yup
-    .string()
-    .required('Email обязателен')
-    .email('Некорректный email')
-    .max(50, 'Максимум 50 символов'),
-
-  lastName: yup
-    .string()
-    .required('Фамилия обязательна')
-    .min(2, 'Минимум 2 символа')
-    .max(30, 'Максимум 30 символов')
-    .matches(
-      /^[а-яА-ЯёЁa-zA-Z\-]+$/,
-      'Только буквы и дефис',
-    ),
-
-  firstName: yup
-    .string()
-    .required('Имя обязательно')
-    .min(2, 'Минимум 2 символа')
-    .max(30, 'Максимум 30 символов')
-    .matches(
-      /^[а-яА-ЯёЁa-zA-Z\-]+$/,
-      'Только буквы и дефис',
-    ),
-
-  surname: yup
-    .string()
-    .max(30, 'Максимум 30 символов')
-    .matches(
-      /^[а-яА-ЯёЁa-zA-Z\-]*$/,
-      'Только буквы и дефис',
-    ),
-
-  position: yup
-    .string()
-    .required('Должность обязательна')
-    .min(3, 'Минимум 3 символа')
-    .max(50, 'Максимум 50 символов'),
-
-  department: yup
-    .string()
-    .required('Отдел обязателен')
-    .min(3, 'Минимум 3 символа')
-    .max(50, 'Максимум 50 символов'),
-});
 
 const RegisterPage = () => {
-  const isLoggedIn = useAppSelector(selectIsLoggedIn);
-  const dispatch = useAppDispatch();
   const [register, { isLoading }] = useRegisterMutation();
   const [registerError, setRegisterError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const {
     control,
@@ -98,7 +32,7 @@ const RegisterPage = () => {
     reset,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(registerSchema),
     defaultValues: {
       username: '',
       password: '',
@@ -120,8 +54,8 @@ const RegisterPage = () => {
         surname: data.surname || '',
       };
       const res = await register(submitData).unwrap();
-      dispatch(setIsLoggedIn({ isLoggedIn: true }));
-      authTokenManager.setAccessToken(res.data.token);
+      alert(res.data)
+      navigate('/login');
     } catch (err: any) {
       const errorData = err as { data?: ErrorResponse };
 
@@ -132,10 +66,6 @@ const RegisterPage = () => {
       reset({ ...data, password: '' });
     }
   };
-
-  if (isLoggedIn) {
-    return <Navigate to="/" />;
-  }
 
   return (
     <div className="flex justify-center items-center h-full p-8">

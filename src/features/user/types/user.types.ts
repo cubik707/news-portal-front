@@ -10,4 +10,18 @@ export type User = {
   position: string;
   department: string;
   roles: UserRole[];
+  approved: boolean;
 };
+
+export type UserForNews = {
+  fullName: string;
+  avatarUrl?: string;
+};
+
+export type RoleObj = {
+  role: UserRole;
+}
+
+export type UserFieldObject = Partial<
+  Pick<User, Exclude<keyof User, 'id' | 'roles' | 'approved'>>
+>;
