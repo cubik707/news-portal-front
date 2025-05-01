@@ -1,8 +1,12 @@
 import { Box, Card, Divider, Typography } from '@mui/material';
 import { UserProfileSkeleton } from './user-profile-skeleton.tsx';
 import Avatar from '@mui/material/Avatar';
-import { User } from '../../user/types/user.types.ts';
+import { User, UserFieldObject } from '../../user/types/user.types.ts';
 import { EditableSpan } from '../../../common/components/editable-span/editable-span.tsx';
+import { useUpdateUserFieldMutation } from '../../user/api/userApi.ts';
+import { useAuthUser } from '../../../common/hooks/useAuthUser.ts';
+import { setAppError } from '../../../app/app-slice.ts';
+import { useAppDispatch } from '../../../common/hooks';
 
 type UserProfileProps = {
   user: User | null;
@@ -11,10 +15,22 @@ type UserProfileProps = {
 }
 
 export const UserProfile = ({user, isLoading, isAdmin}: UserProfileProps) => {
+  const [updateUserField] = useUpdateUserFieldMutation();
+  const { refetch } = useAuthUser();
+  const dispatch = useAppDispatch();
 
-  const handleSaveField = async (field: keyof User, value: string) => {
-    // API call to save changes
-    console.log(`Saving ${field}:`, value);
+  const handleSaveField = async (field: keyof UserFieldObject, value: string) => {
+    if (!user) return;
+    const userFiled = {[field]: value}
+
+    try {
+      await updateUserField({ id: user.id, userFiled }).unwrap();
+      await refetch();
+    } catch (error: any) {
+      const message =
+        error?.data?.message || error?.error || 'Произошла ошибка при обновлении пользователя';
+      dispatch(setAppError({ error: message }));
+    }
   };
 
   if (isLoading) {

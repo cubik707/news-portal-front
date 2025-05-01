@@ -18,3 +18,7 @@ export type UserForNews = {
 };
 
 export type UserWithoutRoles = Omit<User, 'roles'>;
+
+export type UserFieldObject = Partial<
+  Pick<User, Exclude<keyof User, 'id' | 'roles'>>
+>;
