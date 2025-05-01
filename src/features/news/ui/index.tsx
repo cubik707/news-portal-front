@@ -9,7 +9,7 @@ import styles from './news.module.scss';
 
 import { UserForNews } from '../../user/types/user.types.ts';
 import { ReactNode } from 'react';
-import { UserInfo } from '../../user/ui/user-info.tsx';
+import { UserInfo } from '../../user/ui/user-info/user-info.tsx';
 import { NewsSkeleton } from './skeleton.tsx';
 
 type NewsProps = {

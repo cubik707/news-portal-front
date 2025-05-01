@@ -34,6 +34,7 @@ const Sidebar = () => {
       width: 240,
       flexShrink: 0,
       zIndex: 1000,
+      minHeight: '100vh',
       '& .MuiDrawer-paper': {
         width: 240,
         boxSizing: 'border-box',

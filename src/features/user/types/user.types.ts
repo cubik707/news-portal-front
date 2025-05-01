@@ -10,6 +10,7 @@ export type User = {
   position: string;
   department: string;
   roles: UserRole[];
+  approved: boolean;
 };
 
 export type UserForNews = {
@@ -20,5 +21,5 @@ export type UserForNews = {
 export type UserWithoutRoles = Omit<User, 'roles'>;
 
 export type UserFieldObject = Partial<
-  Pick<User, Exclude<keyof User, 'id' | 'roles'>>
+  Pick<User, Exclude<keyof User, 'id' | 'roles' | 'approved'>>
 >;

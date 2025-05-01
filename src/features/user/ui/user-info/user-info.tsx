@@ -1,5 +1,5 @@
 import styles from './user-info.module.scss'
-import { UserForNews } from '../types/user.types.ts';
+import { UserForNews } from '../../types/user.types.ts';
 
 type UserInfoProps = UserForNews & {
   additionalText: string

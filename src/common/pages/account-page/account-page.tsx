@@ -6,7 +6,7 @@ import Box from '@mui/system/Box';
 export const AccountPage = () => {
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1}}>
       <Header />
       <AccountLayout />
     </Box>

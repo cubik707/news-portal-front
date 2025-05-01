@@ -9,7 +9,8 @@ export const AccountLayout = () => {
     <Box display="flex" sx={{
       position: 'relative',
       zIndex: 1,
-      height: 'calc(100vh - var(--header-height))',
+      minHeight: '100vh', // Заменили фиксированную высоту на минимальную
+      flexGrow: 1,
     }}>
       <Sidebar />
       <Box component="main" sx={{

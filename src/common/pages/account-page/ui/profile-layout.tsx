@@ -7,7 +7,7 @@ import { UserRole } from '../../../../features/user/types/user-role.enum.ts';
 const ProfileLayout = () => {
   const { user, isLoading } = useUser();
 
-  const isAdmin = user?.roles.includes(UserRole.ADMIN) ?? null;
+  const isAdmin = user?.roles.includes(UserRole.ADMIN);
 
   return (
     <>
