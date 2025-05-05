@@ -10,6 +10,7 @@ import { useGetNewsByStatusQuery } from '../../../features/news/api/news-api.ts'
 import { NewsStatus } from '../../../features/news/types/news-status.enum.ts';
 import { useGetLast3TagsQuery } from '../../../features/tags/api/tagsApi.ts';
 import { useGetAllCategoriesQuery } from '../../../features/category/api/categoryApi.ts';
+import { NewsSkeleton } from '../../../features/news/ui/skeleton.tsx';
 
 const MainPage = () => {
   const {data: newsData, isLoading: isNewsLoading} = useGetNewsByStatusQuery(NewsStatus.published);
@@ -52,20 +53,24 @@ const MainPage = () => {
         </Tabs>
         <Grid container spacing={4}>
           <Grid size={{ xs: 8 }}>
-            {newsList.map((news) => (
-              <NewsPost
-                id={news.id}
-                title={news.title}
-                image={`${import.meta.env.VITE_API_BASE_URL}${news.image}`}
-                author={news.author}
-                publishedAt={news.publishedAt}
-                likesCount={150}
-                commentsCount={3}
-                tags={news.tags}
-                isEditable
-                isLoading={isNewsLoading}
-              />
-            ))}
+            {(isNewsLoading ? Array(5).fill(null) : newsList).map((news, index) =>
+              isNewsLoading ? (
+                <NewsSkeleton key={index} />
+              ) : (
+                <NewsPost
+                  key={news.id}
+                  id={news.id}
+                  title={news.title}
+                  image={`${import.meta.env.VITE_API_BASE_URL}${news.image}`}
+                  author={news.author}
+                  publishedAt={news.publishedAt}
+                  likesCount={150}
+                  commentsCount={3}
+                  tags={news.tags}
+                  isEditable
+                />
+              )
+            )}
           </Grid>
           <Grid size={{ xs: 4 }}>
             <TagsBlock items={lastTags} isLoading={isTagsLoading} />

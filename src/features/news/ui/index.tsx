@@ -8,15 +8,13 @@ import CommentIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
 import styles from './news.module.scss';
 import { ReactNode } from 'react';
 import { UserInfo } from '../../user/ui/user-info/user-info.tsx';
-import { NewsSkeleton } from './skeleton.tsx';
-import {News} from '../types/news.types.ts';
+import { News } from '../types/news.types.ts';
 
 type NewsProps = Omit<News, "content" | "category"> & {
   likesCount: number;
   commentsCount: number;
   children?: ReactNode;
   isFullPost?: boolean;
-  isLoading?: boolean;
   isEditable?: boolean;
 }
 
@@ -31,12 +29,8 @@ const NewsPost = ({
                 tags,
                 children,
                 isFullPost,
-                isLoading,
                 isEditable,
               }: NewsProps) => {
-  if (isLoading) {
-    return <NewsSkeleton />;
-  }
 
   const onClickRemove = () => {};
 
