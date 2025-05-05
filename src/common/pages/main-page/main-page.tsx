@@ -8,10 +8,15 @@ import { Container } from '@mui/material';
 import { Header } from '../../components/header/header.tsx';
 import { useGetNewsByStatusQuery } from '../../../features/news/api/news-api.ts';
 import { NewsStatus } from '../../../features/news/types/news-status.enum.ts';
+import { useGetLast3TagsQuery } from '../../../features/tags/api/tagsApi.ts';
 
 const MainPage = () => {
-  const {data, isLoading} = useGetNewsByStatusQuery(NewsStatus.published);
-  const newsList = data?.data || [];
+  const {data: newsData, isLoading: isNewsLoading} = useGetNewsByStatusQuery(NewsStatus.published);
+  const newsList = newsData?.data || [];
+
+  // Для тегов
+  const {data: tagsData, isLoading: isTagsLoading} = useGetLast3TagsQuery();
+  const lastTags = tagsData?.data || [];
 
   return (
     <>
@@ -34,12 +39,12 @@ const MainPage = () => {
                 commentsCount={3}
                 tags={news.tags}
                 isEditable
-                isLoading={isLoading}
+                isLoading={isNewsLoading}
               />
             ))}
           </Grid>
           <Grid size={{ xs: 4 }}>
-            <TagsBlock items={['react', 'typescript', 'заметки']} isLoading={false} />
+            <TagsBlock items={lastTags} isLoading={isTagsLoading} />
             <CommentsBlock
               items={[
                 {
