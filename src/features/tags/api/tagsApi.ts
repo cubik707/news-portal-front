@@ -8,7 +8,7 @@ export const tagsApi = baseApi.injectEndpoints({
     getAllTags: builder.query<SuccessResponse<Tag[]>, void>({
       query: () => 'tags',
     }),
-    getOneTag: builder.query<SuccessResponse<Tag>, { id: number }>({
+    getOneTag: builder.query<SuccessResponse<Tag>, number>({
       query: (id) => `tags/${id}`,
     }),
     getLast3Tags: builder.query<SuccessResponse<Tag[]>, void>({

@@ -4,27 +4,51 @@ import Grid from '@mui/material/Grid';
 import NewsPost from '../../../features/news/ui';
 import { TagsBlock } from '../../../features/tags/ui/tags-block.tsx';
 import { CommentsBlock } from '../../../features/comments/ui/comments-block.tsx';
-import { Container } from '@mui/material';
+import { Container, Skeleton } from '@mui/material';
 import { Header } from '../../components/header/header.tsx';
 import { useGetNewsByStatusQuery } from '../../../features/news/api/news-api.ts';
 import { NewsStatus } from '../../../features/news/types/news-status.enum.ts';
 import { useGetLast3TagsQuery } from '../../../features/tags/api/tagsApi.ts';
+import { useGetAllCategoriesQuery } from '../../../features/category/api/categoryApi.ts';
 
 const MainPage = () => {
   const {data: newsData, isLoading: isNewsLoading} = useGetNewsByStatusQuery(NewsStatus.published);
   const newsList = newsData?.data || [];
 
-  // Для тегов
   const {data: tagsData, isLoading: isTagsLoading} = useGetLast3TagsQuery();
   const lastTags = tagsData?.data || [];
+
+  const {data: categoriesData, isLoading: isCategoriesLoading} = useGetAllCategoriesQuery();
+  const categoriesList = categoriesData?.data || [];
+
 
   return (
     <>
       <Header />
       <Container maxWidth="lg">
         <Tabs style={{ marginBottom: 15 }} value={0} aria-label="basic tabs example">
-          <Tab label="Новые" />
-          <Tab label="Популярные" />
+          <Tab label="All" />
+          {isCategoriesLoading ? (
+            Array(3).fill(null).map((_, index) => (
+              <Tab
+                key={index}
+                disabled
+                label={
+                  <Skeleton
+                    variant="text"
+                    width={80}
+                    height={40}
+                    animation="wave"
+                    sx={{ mx: 1 }}
+                  />
+                }
+              />
+            ))
+          ) : (
+            categoriesList.map((category) => (
+              <Tab key={category.id} label={category.name} />
+            ))
+          )}
         </Tabs>
         <Grid container spacing={4}>
           <Grid size={{ xs: 8 }}>
