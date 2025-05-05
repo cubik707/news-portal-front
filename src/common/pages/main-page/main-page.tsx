@@ -11,11 +11,15 @@ import { NewsStatus } from '../../../features/news/types/news-status.enum.ts';
 import { useGetLast3TagsQuery } from '../../../features/tags/api/tagsApi.ts';
 import { useGetAllCategoriesQuery } from '../../../features/category/api/categoryApi.ts';
 import { NewsSkeleton } from '../../../features/news/ui/skeleton.tsx';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 const MainPage = () => {
   const [activeTab, setActiveTab] = useState(0);
-  const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const categoryIdParam = searchParams.get('category');
+  const selectedCategoryId = categoryIdParam ? Number(categoryIdParam) : null;
 
   const {
     data: newsByStatusData,
@@ -51,10 +55,18 @@ const MainPage = () => {
   const { data: categoriesData, isLoading: isCategoriesLoading } = useGetAllCategoriesQuery();
   const categoriesList = categoriesData?.data || [];
 
+  useEffect(() => {
+    if (!categoriesList.length) return;
+
+    const categoryId = Number(searchParams.get('category'));
+    const index = categoriesList.findIndex((c) => c.id === categoryId);
+    setActiveTab(index !== -1 ? index + 1 : 0);
+  }, [categoriesList, searchParams]);
+
   const onChangeActiveCategory = (newValue: number) => {
     setActiveTab(newValue);
     const selectedCategory = newValue === 0 ? null : categoriesList[newValue - 1];
-    setSelectedCategoryId(selectedCategory?.id ?? null);
+    setSearchParams(selectedCategory ? { category: selectedCategory.id.toString() } : {});
   };
 
   return (
