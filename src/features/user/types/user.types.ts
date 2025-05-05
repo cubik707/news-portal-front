@@ -14,7 +14,10 @@ export type User = {
 };
 
 export type UserForNews = {
-  fullName: string;
+  id: number;
+  lastName: string;
+  firstName: string;
+  surname?: string;
   avatarUrl?: string;
 };
 
