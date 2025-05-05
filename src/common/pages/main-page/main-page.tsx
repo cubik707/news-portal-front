@@ -6,29 +6,67 @@ import { TagsBlock } from '../../../features/tags/ui/tags-block.tsx';
 import { CommentsBlock } from '../../../features/comments/ui/comments-block.tsx';
 import { Container, Skeleton } from '@mui/material';
 import { Header } from '../../components/header/header.tsx';
-import { useGetNewsByStatusQuery } from '../../../features/news/api/news-api.ts';
+import { useGetNewsByCategoryAndStatusQuery, useGetNewsByStatusQuery } from '../../../features/news/api/news-api.ts';
 import { NewsStatus } from '../../../features/news/types/news-status.enum.ts';
 import { useGetLast3TagsQuery } from '../../../features/tags/api/tagsApi.ts';
 import { useGetAllCategoriesQuery } from '../../../features/category/api/categoryApi.ts';
 import { NewsSkeleton } from '../../../features/news/ui/skeleton.tsx';
+import { useMemo, useState } from 'react';
 
 const MainPage = () => {
-  const {data: newsData, isLoading: isNewsLoading} = useGetNewsByStatusQuery(NewsStatus.published);
-  const newsList = newsData?.data || [];
+  const [activeTab, setActiveTab] = useState(0);
+  const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(null);
 
-  const {data: tagsData, isLoading: isTagsLoading} = useGetLast3TagsQuery();
+  const {
+    data: newsByStatusData,
+    isLoading: isNewsByStatusLoading,
+  } = useGetNewsByStatusQuery(NewsStatus.published, {
+    skip: selectedCategoryId !== null,
+  });
+
+  const {
+    data: newsByCategoryData,
+    isLoading: isNewsByCategoryLoading,
+  } = useGetNewsByCategoryAndStatusQuery(
+    {
+      categoryId: selectedCategoryId!,
+      status: NewsStatus.published,
+    },
+    {
+      skip: selectedCategoryId === null,
+    }
+  );
+
+  const newsList = useMemo(() => {
+    return selectedCategoryId === null
+      ? newsByStatusData?.data || []
+      : newsByCategoryData?.data || [];
+  }, [newsByStatusData, newsByCategoryData, selectedCategoryId]);
+
+  const isNewsLoading = selectedCategoryId === null ? isNewsByStatusLoading : isNewsByCategoryLoading;
+
+  const { data: tagsData, isLoading: isTagsLoading } = useGetLast3TagsQuery();
   const lastTags = tagsData?.data || [];
 
-  const {data: categoriesData, isLoading: isCategoriesLoading} = useGetAllCategoriesQuery();
+  const { data: categoriesData, isLoading: isCategoriesLoading } = useGetAllCategoriesQuery();
   const categoriesList = categoriesData?.data || [];
 
+  const onChangeActiveCategory = (newValue: number) => {
+    setActiveTab(newValue);
+    const selectedCategory = newValue === 0 ? null : categoriesList[newValue - 1];
+    setSelectedCategoryId(selectedCategory?.id ?? null);
+  };
 
   return (
     <>
       <Header />
       <Container maxWidth="lg">
-        <Tabs style={{ marginBottom: 15 }} value={0} aria-label="basic tabs example">
-          <Tab label="All" />
+        <Tabs
+          value={activeTab}
+          onChange={(_, newValue: number) => onChangeActiveCategory(newValue)}
+          style={{ marginBottom: 15 }}
+          aria-label="basic tabs example">
+          <Tab label="All"/>
           {isCategoriesLoading ? (
             Array(3).fill(null).map((_, index) => (
               <Tab
@@ -47,7 +85,10 @@ const MainPage = () => {
             ))
           ) : (
             categoriesList.map((category) => (
-              <Tab key={category.id} label={category.name} />
+              <Tab
+                key={category.id}
+                label={category.name}
+              />
             ))
           )}
         </Tabs>
@@ -69,7 +110,7 @@ const MainPage = () => {
                   tags={news.tags}
                   isEditable
                 />
-              )
+              ),
             )}
           </Grid>
           <Grid size={{ xs: 4 }}>
