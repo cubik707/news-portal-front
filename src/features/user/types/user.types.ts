@@ -9,6 +9,7 @@ export type User = {
   surname?: string;
   position: string;
   department: string;
+  avatarUrl?: string;
   roles: UserRole[];
   approved: boolean;
 };
