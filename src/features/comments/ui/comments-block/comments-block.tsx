@@ -7,7 +7,7 @@ import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
 import Skeleton from "@mui/material/Skeleton";
 import { Fragment, ReactNode } from 'react';
-import { SideBlock } from '../../tags/ui/side-block.tsx';
+import { SideBlock } from '../../../tags/ui/side-block.tsx';
 
 type CommentUser = {
   fullName: string;

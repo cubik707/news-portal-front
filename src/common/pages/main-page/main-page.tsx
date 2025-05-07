@@ -1,20 +1,24 @@
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Grid from '@mui/material/Grid';
-import NewsPost from '../../../features/news/ui';
+import NewsPost from '../../../features/news/ui/news-post';
 import { TagsBlock } from '../../../features/tags/ui/tags-block.tsx';
-import { CommentsBlock } from '../../../features/comments/ui/comments-block.tsx';
+import { CommentsBlock } from '../../../features/comments/ui/comments-block/comments-block.tsx';
 import { Container, Skeleton } from '@mui/material';
 import { Header } from '../../components/header/header.tsx';
 import { useGetNewsByCategoryAndStatusQuery, useGetNewsByStatusQuery } from '../../../features/news/api/news-api.ts';
 import { NewsStatus } from '../../../features/news/types/news-status.enum.ts';
 import { useGetLast3TagsQuery } from '../../../features/tags/api/tagsApi.ts';
 import { useGetAllCategoriesQuery } from '../../../features/category/api/categoryApi.ts';
-import { NewsSkeleton } from '../../../features/news/ui/skeleton.tsx';
+import { NewsSkeleton } from '../../../features/news/ui/news-post/skeleton.tsx';
 import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { UserRole } from '../../../features/user/types/user-role.enum.ts';
+import { useUser } from '../../context/user-context.tsx';
 
 const MainPage = () => {
+  const { user } = useUser();
+  const isEditor = user?.roles.includes(UserRole.EDITOR);
   const [activeTab, setActiveTab] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -120,7 +124,7 @@ const MainPage = () => {
                   likesCount={150}
                   commentsCount={3}
                   tags={news.tags}
-                  isEditable
+                  isEditable={isEditor}
                 />
               ),
             )}

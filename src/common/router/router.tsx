@@ -8,6 +8,7 @@ import { Page404 } from '../pages/page-404/page-404.tsx';
 import { AccountPage } from '../pages/account-page/account-page.tsx';
 import ProfileLayout from '../pages/account-page/ui/profile-layout.tsx';
 import UserManagementLayout from '../pages/account-page/ui/user-management-layout.tsx';
+import { NewsFullPost } from '../pages/news-full-post/news-full-post.tsx';
 
 export const router = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ export const router = createBrowserRouter([
           {
             index: true,
             element: <MainPage />
+          },
+          {
+            path: 'news/:id',
+            element: <NewsFullPost/>
           },
           {
             path: 'account',

@@ -18,6 +18,9 @@ export const newsApi = baseApi.injectEndpoints({
         params: { status: NewsStatus[status] },
       }),
     }),
+    getOneNews: builder.query<SuccessResponse<News>, number>({
+      query: (id) => `news/${id}`
+    }),
     createNews: builder.mutation<SuccessResponse<News>, NewsCreate>({
       query: (NewsCreate) => ({
         url: '/news',
@@ -39,4 +42,5 @@ export const {
   useDeleteUserMutation,
   useGetNewsByCategoryAndStatusQuery,
   useGetNewsByStatusQuery,
+  useGetOneNewsQuery
 } = newsApi;

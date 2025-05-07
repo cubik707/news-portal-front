@@ -7,8 +7,9 @@ import CommentIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
 
 import styles from './news.module.scss';
 import { ReactNode } from 'react';
-import { UserInfo } from '../../user/ui/user-info/user-info.tsx';
-import { News } from '../types/news.types.ts';
+import { UserInfo } from '../../../user/ui/user-info/user-info.tsx';
+import { News } from '../../types/news.types.ts';
+import { Link } from 'react-router-dom';
 
 type NewsProps = Omit<News, "content" | "category"> & {
   likesCount: number;
@@ -38,11 +39,11 @@ const NewsPost = ({
     <div className={clsx(styles.root, { [styles.rootFull]: isFullPost })}>
       {isEditable && (
         <div className={styles.editButtons}>
-          <a href={`/posts/${id}/edit`}>
+          <Link to={`/posts/${id}/edit`}>
             <IconButton color="primary">
               <EditIcon />
             </IconButton>
-          </a>
+          </Link>
           <IconButton onClick={onClickRemove} color="secondary">
             <DeleteIcon />
           </IconButton>
@@ -59,7 +60,7 @@ const NewsPost = ({
         <UserInfo {...author} additionalText={publishedAt} />
         <div className={styles.indention}>
           <h2 className={clsx(styles.title, { [styles.titleFull]: isFullPost })}>
-            {isFullPost ? title : <a href={`/posts/${id}`}>{title}</a>}
+            {isFullPost ? title : <Link to={`/news/${id}`}>{title}</Link>}
           </h2>
           <ul className={styles.tags}>
             {tags.map((tag) => (
