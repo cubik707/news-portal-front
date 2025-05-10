@@ -28,7 +28,7 @@ export const newsApi = baseApi.injectEndpoints({
         body: NewsCreate,
       }),
     }),
-    deleteUser: builder.mutation<SuccessResponse<null>, void>({
+    deleteNews: builder.mutation<SuccessResponse<null>, void>({
       query: (id) => ({
         url: `news/${id}`,
         method: HttpMethod.DELETE,
@@ -39,7 +39,7 @@ export const newsApi = baseApi.injectEndpoints({
 
 export const {
   useCreateNewsMutation,
-  useDeleteUserMutation,
+  useDeleteNewsMutation,
   useGetNewsByCategoryAndStatusQuery,
   useGetNewsByStatusQuery,
   useGetOneNewsQuery

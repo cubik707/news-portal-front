@@ -13,12 +13,10 @@ import { useGetAllCategoriesQuery } from '../../../features/category/api/categor
 import { NewsSkeleton } from '../../../features/news/ui/news-post/skeleton.tsx';
 import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { UserRole } from '../../../features/user/types/user-role.enum.ts';
 import { useUser } from '../../context/user-context.tsx';
 
 const MainPage = () => {
   const { user } = useUser();
-  const isEditor = user?.roles.includes(UserRole.EDITOR);
   const [activeTab, setActiveTab] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -124,7 +122,7 @@ const MainPage = () => {
                   likesCount={150}
                   commentsCount={3}
                   tags={news.tags}
-                  isEditable={isEditor}
+                  isEditable={user?.id === news.author.id}
                 />
               ),
             )}

@@ -42,7 +42,7 @@ export const UserProfile = ({user, isLoading, isAdmin}: UserProfileProps) => {
       <Typography variant="h5" gutterBottom>Профиль пользователя</Typography>
       <Divider sx={{ my: 2 }} />
       <Box display="flex" alignItems="flex-start" gap={5}>
-        <Avatar sx={{ width: 115, height: 115 }} />
+        <Avatar sx={{ width: 115, height: 115 }} src={`${import.meta.env.VITE_API_BASE_URL}${user!.avatarUrl}`} />
 
         <Box
           sx={{
