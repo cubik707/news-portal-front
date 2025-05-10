@@ -1,7 +1,7 @@
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Grid from '@mui/material/Grid';
-import NewsPost from '../../../features/news/ui/news-post';
+import NewsPost from '../../../features/news/ui/news-post/news-post.tsx';
 import { TagsBlock } from '../../../features/tags/ui/tags-block.tsx';
 import { CommentsBlock } from '../../../features/comments/ui/comments-block/comments-block.tsx';
 import { Container, Skeleton } from '@mui/material';
@@ -10,7 +10,7 @@ import { useGetNewsByCategoryAndStatusQuery, useGetNewsByStatusQuery } from '../
 import { NewsStatus } from '../../../features/news/types/news-status.enum.ts';
 import { useGetLast3TagsQuery } from '../../../features/tags/api/tagsApi.ts';
 import { useGetAllCategoriesQuery } from '../../../features/category/api/categoryApi.ts';
-import { NewsSkeleton } from '../../../features/news/ui/news-post/skeleton.tsx';
+import { NewsSkeleton } from '../../../features/news/ui/news-post/news-post-skeleton.tsx';
 import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useUser } from '../../context/user-context.tsx';
@@ -40,7 +40,7 @@ const MainPage = () => {
     },
     {
       skip: selectedCategoryId === null,
-    }
+    },
   );
 
   const newsList = useMemo(() => {
@@ -80,7 +80,7 @@ const MainPage = () => {
           onChange={(_, newValue: number) => onChangeActiveCategory(newValue)}
           style={{ marginBottom: 15 }}
           aria-label="basic tabs example">
-          <Tab label="All"/>
+          <Tab label="All" />
           {isCategoriesLoading ? (
             Array(3).fill(null).map((_, index) => (
               <Tab

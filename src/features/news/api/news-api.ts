@@ -11,12 +11,18 @@ export const newsApi = baseApi.injectEndpoints({
         url: `news/category/${categoryId}/status`,
         params: { status },
       }),
+      providesTags: (_result, _error, { categoryId, status }) => [
+        { type: 'News' as const, id: `CATEGORY_${categoryId}_STATUS_${status}` },
+      ],
     }),
     getNewsByStatus: builder.query<SuccessResponse<News[]>, NewsStatus>({
       query: (status) => ({
         url: `news/status`,
         params: { status: NewsStatus[status] },
       }),
+      providesTags: (_result, _error, status) => [
+        { type: 'News' as const, id: `STATUS_${status}` },
+      ],
     }),
     getOneNews: builder.query<SuccessResponse<News>, number>({
       query: (id) => `news/${id}`
@@ -28,11 +34,14 @@ export const newsApi = baseApi.injectEndpoints({
         body: NewsCreate,
       }),
     }),
-    deleteNews: builder.mutation<SuccessResponse<null>, void>({
+    deleteNews: builder.mutation<SuccessResponse<null>, number>({
       query: (id) => ({
         url: `news/${id}`,
         method: HttpMethod.DELETE,
       }),
+      invalidatesTags: (_result, _error, _id) => [
+        { type: 'News' as const },
+      ],
     }),
   }),
 });

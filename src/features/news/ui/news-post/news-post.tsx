@@ -6,34 +6,50 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import CommentIcon from '@mui/icons-material/ChatBubbleOutlineOutlined';
 
 import styles from './news.module.scss';
-import { ReactNode } from 'react';
+import { ReactNode, useCallback } from 'react';
 import { UserInfo } from '../../../user/ui/user-info/user-info.tsx';
 import { News } from '../../types/news.types.ts';
 import { Link } from 'react-router-dom';
+import { useDeleteNewsMutation } from '../../api/news-api.ts';
+import { setAppError } from '../../../../app/app-slice.ts';
+import { useAppDispatch } from '../../../../common/hooks';
 
-type NewsProps = Omit<News, "content" | "category"> & {
-  likesCount: number;
-  commentsCount: number;
+type NewsProps = Omit<News, 'content' | 'category'> & {
+  likesCount?: number;
+  commentsCount?: number;
   children?: ReactNode;
   isFullPost?: boolean;
   isEditable?: boolean;
+  isDraft?: boolean;
 }
 
 const NewsPost = ({
-                id,
-                title,
-                publishedAt,
-                image,
-                author,
-                likesCount,
-                commentsCount,
-                tags,
-                children,
-                isFullPost,
-                isEditable,
-              }: NewsProps) => {
+                    id,
+                    title,
+                    publishedAt,
+                    image,
+                    author,
+                    likesCount,
+                    commentsCount,
+                    tags,
+                    children,
+                    isFullPost,
+                    isEditable,
+                    isDraft,
+                  }: NewsProps) => {
 
-  const onClickRemove = () => {};
+  const [deleteNews] = useDeleteNewsMutation();
+  const dispatch = useAppDispatch();
+
+  const onClickRemove = useCallback(async () => {
+    try {
+      await deleteNews(id).unwrap();
+    } catch (error: any) {
+      const message =
+        error?.data?.message || error?.error || 'Произошла ошибка при удалении новости';
+      dispatch(setAppError({ error: message }));
+    }
+  }, [deleteNews]);
 
   return (
     <div className={clsx(styles.root, { [styles.rootFull]: isFullPost })}>
@@ -60,7 +76,9 @@ const NewsPost = ({
         <UserInfo {...author} additionalText={publishedAt} />
         <div className={styles.indention}>
           <h2 className={clsx(styles.title, { [styles.titleFull]: isFullPost })}>
-            {isFullPost ? title : <Link to={`/news/${id}`}>{title}</Link>}
+            {isFullPost ? title : (isDraft ?
+              <span>{title}</span> :
+              <Link to={`/news/${id}`}>{title}</Link>)}
           </h2>
           <ul className={styles.tags}>
             {tags.map((tag) => (
@@ -71,14 +89,14 @@ const NewsPost = ({
           </ul>
           {children && <div className={styles.content}>{children}</div>}
           <ul className={styles.postDetails}>
-            <li>
+            {likesCount && (<li>
               <FavoriteIcon />
               <span>{likesCount}</span>
-            </li>
-            <li>
+            </li>)}
+            {commentsCount && (<li>
               <CommentIcon />
               <span>{commentsCount}</span>
-            </li>
+            </li>)}
           </ul>
         </div>
       </div>

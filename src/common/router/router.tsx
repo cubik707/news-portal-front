@@ -10,6 +10,7 @@ import ProfileLayout from '../pages/account-page/ui/profile-layout.tsx';
 import UserManagementLayout from '../pages/account-page/ui/user-management-layout.tsx';
 import { NewsFullPost } from '../pages/news-full-post/news-full-post.tsx';
 import { AddNewsPost } from '../pages/add-news-post/add-news-post.tsx';
+import { DraftedNewsLayout } from '../pages/account-page/ui/drafted-news-layout.tsx';
 
 export const router = createBrowserRouter([
   {
@@ -46,6 +47,15 @@ export const router = createBrowserRouter([
               {
                 path: 'profile',
                 element: <ProfileLayout/>
+              },
+              {
+                path: 'editor',
+                children: [
+                  {
+                    path: 'drafted-news',
+                    element: <DraftedNewsLayout/>
+                  }
+                ]
               },
               {
                 path: 'admin',

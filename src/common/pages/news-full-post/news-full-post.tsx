@@ -1,11 +1,11 @@
-import NewsPost from '../../../features/news/ui/news-post';
+import NewsPost from '../../../features/news/ui/news-post/news-post.tsx';
 import { CommentsBlock } from '../../../features/comments/ui/comments-block/comments-block.tsx';
 import { AddComments } from '../../../features/comments/ui/add-comments/add-comments.tsx';
 import { Container } from '@mui/material';
 import { Header } from '../../components/header/header.tsx';
 import { useGetOneNewsQuery } from '../../../features/news/api/news-api.ts';
 import { useParams } from 'react-router-dom';
-import { NewsSkeleton } from '../../../features/news/ui/news-post/skeleton.tsx';
+import { NewsSkeleton } from '../../../features/news/ui/news-post/news-post-skeleton.tsx';
 import Markdown from 'react-markdown';
 
 
