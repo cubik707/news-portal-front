@@ -9,6 +9,7 @@ import { AccountPage } from '../pages/account-page/account-page.tsx';
 import ProfileLayout from '../pages/account-page/ui/profile-layout.tsx';
 import UserManagementLayout from '../pages/account-page/ui/user-management-layout.tsx';
 import { NewsFullPost } from '../pages/news-full-post/news-full-post.tsx';
+import { AddNewsPost } from '../pages/add-news-post/add-news-post.tsx';
 
 export const router = createBrowserRouter([
   {
@@ -33,6 +34,10 @@ export const router = createBrowserRouter([
           {
             path: 'news/:id',
             element: <NewsFullPost/>
+          },
+          {
+            path: 'news/create',
+            element: <AddNewsPost/>
           },
           {
             path: 'account',
