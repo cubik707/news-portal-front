@@ -10,7 +10,7 @@ import { Header } from '../../components/header/header.tsx';
 import { Container, FormControl, FormHelperText, InputLabel, LinearProgress, MenuItem, Select } from '@mui/material';
 import { useAppDispatch } from '../../hooks';
 import { setAppError } from '../../../app/app-slice.ts';
-import { useUploadImageMutation } from '../../../features/file-upload/api/upload-api.ts';
+import { useDeleteImageMutation, useUploadImageMutation } from '../../../features/file-upload/api/upload-api.ts';
 import { useGetAllCategoriesQuery } from '../../../features/category/api/categoryApi.ts';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { createNewsSchema, NewsFormData } from '../../../features/news/model/create-news-schema.ts';
@@ -44,6 +44,7 @@ export const AddNewsPost = () => {
   const navigate = useNavigate();
 
   const [uploadImage, { isLoading: isUpLoading }] = useUploadImageMutation();
+  const [deleteImage, { isLoading: isDeleteImageLoading }] = useDeleteImageMutation();
 
   const [createNews] = useCreateNewsMutation();
 
@@ -72,8 +73,25 @@ export const AddNewsPost = () => {
     }
   };
 
-  const onClickRemoveImage = () => {
-    setValue('image', '');
+  const onClickRemoveImage = async () => {
+    try {
+      const formData = new FormData();
+      const fullPath = watch('image');
+      const fileName = fullPath.split('/').pop() || '';
+      formData.append('fileName', fileName);
+      formData.append('category', 'news');
+
+      await deleteImage(formData).unwrap();
+      setValue('image', '');
+
+      if (inputFileRef.current) {
+        inputFileRef.current.value = '';
+      }
+    } catch (error: any){
+      const message =
+        error?.data?.message || error?.error || 'Произошла ошибка при удалении изображения';
+      dispatch(setAppError({ error: message }));
+    }
   };
 
   const onSubmit: SubmitHandler<NewsFormData> = async (data) => {
@@ -118,7 +136,7 @@ export const AddNewsPost = () => {
     <>
       <Header />
       <Container sx={{ marginTop: 2 }}>
-        {isUpLoading && (<LinearProgress
+        {(isUpLoading || isDeleteImageLoading) && (<LinearProgress
           sx={{
             position: 'fixed',
             top: 0,
