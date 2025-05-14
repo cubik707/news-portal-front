@@ -24,6 +24,15 @@ export const newsApi = baseApi.injectEndpoints({
         { type: 'News' as const, id: `STATUS_${status}` },
       ],
     }),
+    getNewsByStatusAndAuthorId: builder.query<SuccessResponse<News[]>, {status: NewsStatus, authorId: number}>({
+      query: ({status, authorId}) => ({
+        url: `news/author/${authorId}/status`,
+        params: { status: NewsStatus[status] },
+      }),
+      providesTags: (_result, _error, status) => [
+        { type: 'News' as const, id: `STATUS_${status}` },
+      ],
+    }),
     getOneNews: builder.query<SuccessResponse<News>, number>({
       query: (id) => `news/${id}`
     }),
@@ -51,5 +60,6 @@ export const {
   useDeleteNewsMutation,
   useGetNewsByCategoryAndStatusQuery,
   useGetNewsByStatusQuery,
+  useGetNewsByStatusAndAuthorIdQuery,
   useGetOneNewsQuery
 } = newsApi;

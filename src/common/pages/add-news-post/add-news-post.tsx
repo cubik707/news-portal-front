@@ -220,7 +220,7 @@ export const AddNewsPost = () => {
                 disabled={isSubmitting || isUpLoading}
                 size="large"
                 variant="contained">
-                Отправить на модерацию
+                Сохранить
               </Button>
               <a href="/">
                 <Button size="large">Отмена</Button>

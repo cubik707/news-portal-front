@@ -91,7 +91,7 @@ const MainPage = () => {
       return newParams;
     });
   };
-  
+
   useEffect(() => {
     setSelectedTag(null);
     setSearchParams(prev => {

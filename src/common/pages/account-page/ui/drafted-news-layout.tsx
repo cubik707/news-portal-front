@@ -1,4 +1,4 @@
-import { useGetNewsByStatusQuery } from '../../../../features/news/api/news-api.ts';
+import { useGetNewsByStatusAndAuthorIdQuery } from '../../../../features/news/api/news-api.ts';
 import { NewsStatus } from '../../../../features/news/types/news-status.enum.ts';
 import { NewsSkeleton } from '../../../../features/news/ui/news-post/news-post-skeleton.tsx';
 import NewsPost from '../../../../features/news/ui/news-post/news-post.tsx';
@@ -7,9 +7,12 @@ import { useUser } from '../../../context/user-context.tsx';
 import { News } from '../../../../features/news/types/news.types.ts';
 
 export const DraftedNewsLayout = () => {
-  const {data, isLoading: isNewsLoading} = useGetNewsByStatusQuery(NewsStatus.draft);
-  const newsList = data?.data ?? [];
   const { user } = useUser();
+  const { data, isLoading: isNewsLoading } = useGetNewsByStatusAndAuthorIdQuery({
+    status: NewsStatus.draft,
+    authorId: user!.id,
+  });
+  const newsList = data?.data ?? [];
 
   return (
     <>
