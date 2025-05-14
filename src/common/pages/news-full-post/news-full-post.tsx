@@ -56,6 +56,20 @@ export const NewsFullPost = () => {
               },
               text: 'When displaying three lines or more, the avatar is not aligned at the top. You should set the prop to align the avatar at the top',
             },
+            {
+              user: {
+                fullName: 'Людмила Кравченко',
+                avatarUrl: 'https://mui.com/static/images/avatar/3.jpg',
+              },
+              text: 'Еще один тестовый комментарий для примера работы системы',
+            },
+            {
+              user: {
+                fullName: 'Владислава Демидовец',
+                avatarUrl: '',
+              },
+              text: 'Вау! Так необычно!!!',
+            },
           ]}
           isLoading={false}
         >

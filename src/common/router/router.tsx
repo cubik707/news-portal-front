@@ -11,6 +11,7 @@ import UserManagementLayout from '../pages/account-page/ui/user-management-layou
 import { NewsFullPost } from '../pages/news-full-post/news-full-post.tsx';
 import { AddNewsPost } from '../pages/add-news-post/add-news-post.tsx';
 import { DraftedNewsLayout } from '../pages/account-page/ui/drafted-news-layout.tsx';
+import { MyCommentsLayout } from '../pages/account-page/ui/my-comments-layout.tsx';
 
 export const router = createBrowserRouter([
   {
@@ -47,6 +48,10 @@ export const router = createBrowserRouter([
               {
                 path: 'profile',
                 element: <ProfileLayout/>
+              },
+              {
+                path: 'comments',
+                element: <MyCommentsLayout/>
               },
               {
                 path: 'editor',

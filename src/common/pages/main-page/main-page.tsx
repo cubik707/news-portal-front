@@ -19,6 +19,7 @@ const MainPage = () => {
   const { user } = useUser();
   const [activeTab, setActiveTab] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [selectedTag, setSelectedTag] = useState<number | null>(null);
 
   const categoryIdParam = searchParams.get('category');
   const selectedCategoryId = categoryIdParam ? Number(categoryIdParam) : null;
@@ -71,6 +72,34 @@ const MainPage = () => {
     setSearchParams(selectedCategory ? { category: selectedCategory.id.toString() } : {});
   };
 
+  const filteredNews = useMemo(() => {
+    if (!selectedTag) return newsList;
+    return newsList.filter(news =>
+      news.tags.some(tag => tag.id === selectedTag)
+    );
+  }, [newsList, selectedTag]);
+
+  const handleTagClick = (tagId: number) => {
+    setSelectedTag(prev => prev === tagId ? null : tagId);
+    setSearchParams(prev => {
+      const newParams = new URLSearchParams(prev);
+      if (selectedTag === tagId) {
+        newParams.delete('tag');
+      } else {
+        newParams.set('tag', tagId.toString());
+      }
+      return newParams;
+    });
+  };
+  
+  useEffect(() => {
+    setSelectedTag(null);
+    setSearchParams(prev => {
+      prev.delete('tag');
+      return prev;
+    });
+  }, [selectedCategoryId]);
+
   return (
     <>
       <Header />
@@ -108,7 +137,7 @@ const MainPage = () => {
         </Tabs>
         <Grid container spacing={4}>
           <Grid size={{ xs: 8 }}>
-            {(isNewsLoading ? Array(5).fill(null) : newsList).map((news, index) =>
+            {(isNewsLoading ? Array(5).fill(null) : filteredNews).map((news, index) =>
               isNewsLoading ? (
                 <NewsSkeleton key={index} />
               ) : (
@@ -128,7 +157,12 @@ const MainPage = () => {
             )}
           </Grid>
           <Grid size={{ xs: 4 }}>
-            <TagsBlock items={lastTags} isLoading={isTagsLoading} />
+            <TagsBlock
+              items={lastTags}
+              isLoading={isTagsLoading}
+              selectedTagId={selectedTag}
+              onTagClick={handleTagClick}
+            />
             <CommentsBlock
               items={[
                 {

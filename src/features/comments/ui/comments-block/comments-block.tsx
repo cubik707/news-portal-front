@@ -8,13 +8,16 @@ import List from "@mui/material/List";
 import Skeleton from "@mui/material/Skeleton";
 import { Fragment, ReactNode } from 'react';
 import { SideBlock } from '../../../tags/ui/side-block.tsx';
-
+import IconButton from '@mui/material/IconButton';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Clear';
 type CommentUser = {
   fullName: string;
   avatarUrl?: string;
 }
 
 type CommentItem = {
+  id?: string;
   user: CommentUser;
   text: string;
 }
@@ -23,10 +26,19 @@ type CommentsBlockProps = {
   items: CommentItem[];
   children?: ReactNode;
   isLoading?: boolean;
+  isEditable?: boolean;
+  onEditComment?: (commentId: string) => void;
+  onDeleteComment?: (commentId: string) => void;
 }
 
-
-export const CommentsBlock = ({ items, children, isLoading = true }: CommentsBlockProps) => {
+export const CommentsBlock = ({
+                                items,
+                                children,
+                                isLoading = true,
+                                isEditable = false,
+                                onEditComment,
+                                onDeleteComment,
+                              }: CommentsBlockProps) => {
   return (
     <SideBlock title="Комментарии">
       <List>
@@ -46,10 +58,36 @@ export const CommentsBlock = ({ items, children, isLoading = true }: CommentsBlo
                   <Skeleton variant="text" height={18} width={230} />
                 </div>
               ) : (
-                <ListItemText
-                  primary={obj.user.fullName}
-                  secondary={obj.text}
-                />
+                <div style={{
+                  display: 'flex',
+                  width: '100%',
+                  justifyContent: 'space-between',
+                  alignItems: 'flex-start'
+                }}>
+                  <ListItemText
+                    primary={obj.user.fullName}
+                    secondary={obj.text}
+                    style={{ flexGrow: 1 }}
+                  />
+                  {isEditable && (
+                    <div style={{ display: 'flex', marginLeft: 16 }}>
+                      <IconButton
+                        onClick={() => onEditComment?.(obj.id)}
+                        size="small"
+                        color="primary"
+                      >
+                        <EditIcon fontSize="small" />
+                      </IconButton>
+                      <IconButton
+                        onClick={() => onDeleteComment?.(obj.id)}
+                        size="small"
+                        color="error"
+                      >
+                        <DeleteIcon fontSize="small" />
+                      </IconButton>
+                    </div>
+                  )}
+                </div>
               )}
             </ListItem>
             <Divider variant="inset" component="li" />
