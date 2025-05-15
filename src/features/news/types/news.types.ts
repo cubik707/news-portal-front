@@ -21,3 +21,13 @@ export type NewsCreate = {
   tags: string[],
   categoryId: number,
 }
+
+export type NewsUpdate = {
+  id: number,
+  title: string,
+  content: string,
+  image: string,
+  authorId: number,
+  tags: string[],
+  categoryId: number,
+}

@@ -12,6 +12,9 @@ import { NewsFullPost } from '../pages/news-full-post/news-full-post.tsx';
 import { AddNewsPost } from '../pages/add-news-post/add-news-post.tsx';
 import { DraftedNewsLayout } from '../pages/account-page/ui/drafted-news-layout.tsx';
 import { MyCommentsLayout } from '../pages/account-page/ui/my-comments-layout.tsx';
+import { EditNewsPost } from '../pages/account-page/edit-news-post/edit-news-post.tsx';
+import { CheckNews } from '../pages/account-page/ui/check-news.tsx';
+import { AdminNewsReview } from '../pages/account-page/ui/admin-news-review.tsx';
 
 export const router = createBrowserRouter([
   {
@@ -36,6 +39,10 @@ export const router = createBrowserRouter([
           {
             path: 'news/:id',
             element: <NewsFullPost/>
+          },
+          {
+            path: 'news/:id/edit',
+            element: <EditNewsPost/>
           },
           {
             path: 'news/create',
@@ -69,6 +76,14 @@ export const router = createBrowserRouter([
                     path: 'users',
                     element: <UserManagementLayout/>
                   },
+                  {
+                    path: 'news',
+                    element: <CheckNews/>
+                  },
+                  {
+                    path: 'news/:id',
+                    element: <AdminNewsReview/>
+                  }
                 ]
               }
             ]

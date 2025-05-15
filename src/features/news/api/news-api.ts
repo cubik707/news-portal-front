@@ -1,6 +1,6 @@
 import { baseApi } from '../../../app/base-api.ts';
 import { SuccessResponse } from '../../../common/types';
-import { News, NewsCreate } from '../types/news.types.ts';
+import { News, NewsCreate, NewsUpdate } from '../types/news.types.ts';
 import { HttpMethod } from '../../../common/enums';
 import { NewsStatus } from '../types/news-status.enum.ts';
 
@@ -52,12 +52,22 @@ export const newsApi = baseApi.injectEndpoints({
         { type: 'News' as const },
       ],
     }),
+    updateNews: builder.mutation<SuccessResponse<News>, {newsUpdated: NewsUpdate, id: number}>({
+      query: ({ id, newsUpdated }) => ({
+        url: `news/${id}`,
+        method: HttpMethod.PUT,
+        body: {
+          newsUpdated,
+        }
+      }),
+    })
   }),
 });
 
 export const {
   useCreateNewsMutation,
   useDeleteNewsMutation,
+  useUpdateNewsMutation,
   useGetNewsByCategoryAndStatusQuery,
   useGetNewsByStatusQuery,
   useGetNewsByStatusAndAuthorIdQuery,
