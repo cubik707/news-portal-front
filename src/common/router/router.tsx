@@ -15,6 +15,7 @@ import { MyCommentsLayout } from '../pages/account-page/ui/my-comments-layout.ts
 import { EditNewsPost } from '../pages/account-page/edit-news-post/edit-news-post.tsx';
 import { CheckNews } from '../pages/account-page/ui/check-news.tsx';
 import { AdminNewsReview } from '../pages/account-page/ui/admin-news-review.tsx';
+import { AmendmentLayout } from '../pages/account-page/ui/аmendment-layout.tsx';
 
 export const router = createBrowserRouter([
   {
@@ -79,6 +80,10 @@ export const router = createBrowserRouter([
                   {
                     path: 'news',
                     element: <CheckNews/>
+                  },
+                  {
+                    path: 'аmendment',
+                    element: <AmendmentLayout/>
                   },
                   {
                     path: 'news/:id',
