@@ -68,7 +68,7 @@ export const Header = () => {
               <>
                 {isEditor && (<Button
                   component={Link}
-                  to="#"
+                  to="/news/create"
                   variant="outlined"
                   color="primary"
                   startIcon={<ArticleIcon />}

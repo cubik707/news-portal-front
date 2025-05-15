@@ -9,12 +9,16 @@ export type User = {
   surname?: string;
   position: string;
   department: string;
+  avatarUrl?: string;
   roles: UserRole[];
   approved: boolean;
 };
 
 export type UserForNews = {
-  fullName: string;
+  id: number;
+  lastName: string;
+  firstName: string;
+  surname?: string;
   avatarUrl?: string;
 };
 

@@ -9,7 +9,7 @@ const menuItems = [
   { label: 'Управление пользователями', path: '/account/admin/users', adminOnly: true },
   { label: 'Рассмотрение заявок пользователей', path: '/account/admin/аmendment', adminOnly: true },
   { label: 'Рассмотрение статьей', path: '/account/admin/news', adminOnly: true },
-  { label: 'Черновики статей', path: '/account/editor/news', editorOnly: true },
+  { label: 'Черновики статей', path: '/account/editor/drafted-news', editorOnly: true },
 ];
 
 const Sidebar = () => {

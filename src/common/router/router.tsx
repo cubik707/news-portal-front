@@ -8,6 +8,14 @@ import { Page404 } from '../pages/page-404/page-404.tsx';
 import { AccountPage } from '../pages/account-page/account-page.tsx';
 import ProfileLayout from '../pages/account-page/ui/profile-layout.tsx';
 import UserManagementLayout from '../pages/account-page/ui/user-management-layout.tsx';
+import { NewsFullPost } from '../pages/news-full-post/news-full-post.tsx';
+import { AddNewsPost } from '../pages/add-news-post/add-news-post.tsx';
+import { DraftedNewsLayout } from '../pages/account-page/ui/drafted-news-layout.tsx';
+import { MyCommentsLayout } from '../pages/account-page/ui/my-comments-layout.tsx';
+import { EditNewsPost } from '../pages/account-page/edit-news-post/edit-news-post.tsx';
+import { CheckNews } from '../pages/account-page/ui/check-news.tsx';
+import { AdminNewsReview } from '../pages/account-page/ui/admin-news-review.tsx';
+import { AmendmentLayout } from '../pages/account-page/ui/аmendment-layout.tsx';
 
 export const router = createBrowserRouter([
   {
@@ -30,6 +38,18 @@ export const router = createBrowserRouter([
             element: <MainPage />
           },
           {
+            path: 'news/:id',
+            element: <NewsFullPost/>
+          },
+          {
+            path: 'news/:id/edit',
+            element: <EditNewsPost/>
+          },
+          {
+            path: 'news/create',
+            element: <AddNewsPost/>
+          },
+          {
             path: 'account',
             element: <AccountPage/>,
             children: [
@@ -38,12 +58,37 @@ export const router = createBrowserRouter([
                 element: <ProfileLayout/>
               },
               {
+                path: 'comments',
+                element: <MyCommentsLayout/>
+              },
+              {
+                path: 'editor',
+                children: [
+                  {
+                    path: 'drafted-news',
+                    element: <DraftedNewsLayout/>
+                  }
+                ]
+              },
+              {
                 path: 'admin',
                 children: [
                   {
                     path: 'users',
                     element: <UserManagementLayout/>
                   },
+                  {
+                    path: 'news',
+                    element: <CheckNews/>
+                  },
+                  {
+                    path: 'аmendment',
+                    element: <AmendmentLayout/>
+                  },
+                  {
+                    path: 'news/:id',
+                    element: <AdminNewsReview/>
+                  }
                 ]
               }
             ]

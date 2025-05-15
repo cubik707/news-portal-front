@@ -25,5 +25,6 @@ export const baseApi = createApi({
   reducerPath: 'newsPortalAPI',
   baseQuery: baseQueryWithAuth,
   endpoints: () => ({}),
+  tagTypes: ['News'],
 })
 

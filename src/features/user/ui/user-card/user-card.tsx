@@ -56,7 +56,7 @@ export const UserCard: React.FC<UserCardProps> = ({ user, onApprove, onDisapprov
     <Card sx={{ mb: 2 }}>
       <CardHeader
         avatar={
-          <Avatar sx={{ width: 115, height: 115 }} />
+          <Avatar sx={{ width: 115, height: 115 }} src={`${import.meta.env.VITE_API_BASE_URL}${user!.avatarUrl}`} />
         }
         title={
           <Box

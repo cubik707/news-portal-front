@@ -53,6 +53,7 @@ const LoginPage = () => {
       const res = await login(data).unwrap();
       dispatch(setIsLoggedIn({ isLoggedIn: true }));
       authTokenManager.setAccessToken(res.data.token);
+      window.location.reload();
     } catch (err: any) {
       const errorData = err as { data?: ErrorResponse };
 
