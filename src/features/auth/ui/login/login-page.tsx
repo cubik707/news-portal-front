@@ -1,3 +1,4 @@
+import React from 'react';
 import { Button, LinearProgress, Link, Paper, TextField, Typography } from '@mui/material';
 import styles from './login-page.module.scss';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
@@ -18,10 +19,7 @@ const schema = yup.object().shape({
     .required('Имя пользователя обязательно')
     .min(3, 'Минимум 3 символа')
     .max(20, 'Максимум 20 символов')
-    .matches(
-      /^[a-zA-Z0-9_]+$/,
-      'Только латинские буквы, цифры и подчеркивание'
-    ),
+    .matches(/^[a-zA-Z0-9_]+$/, 'Только латинские буквы, цифры и подчеркивание'),
   password: yup
     .string()
     .required('Пароль обязателен')
@@ -31,7 +29,7 @@ const schema = yup.object().shape({
 
 const LoginPage = () => {
   const isLoggedIn = useAppSelector(selectIsLoggedIn)
-  const [login, {isLoading}] = useLoginMutation();
+  const [login, { isLoading }] = useLoginMutation();
   const dispatch = useAppDispatch();
   const [loginError, setLoginError] = useState<string | null>(null);
 
@@ -44,17 +42,17 @@ const LoginPage = () => {
     resolver: yupResolver(schema),
     defaultValues: {
       username: '',
-      password: ''
+      password: '',
     },
   });
 
   const onSubmit: SubmitHandler<LoginArgs> = async (data) => {
     try {
       const res = await login(data).unwrap();
-      dispatch(setIsLoggedIn({ isLoggedIn: true }));
       authTokenManager.setAccessToken(res.data.token);
+      dispatch(setIsLoggedIn({ isLoggedIn: true }));
       window.location.reload();
-    } catch (err: any) {
+    } catch (err) {
       const errorData = err as { data?: ErrorResponse };
 
       setLoginError(
@@ -123,18 +121,12 @@ const LoginPage = () => {
           </div>
 
           {loginError && (
-            <Typography color="error" sx={{marginBottom: '1rem'}}>
+            <Typography color="error" sx={{ marginBottom: '1rem' }}>
               {loginError}
             </Typography>
           )}
 
-          <Button
-            type="submit"
-            size="large"
-            variant="contained"
-            fullWidth
-            disabled={isLoading}
-          >
+          <Button type="submit" size="large" variant="contained" fullWidth disabled={isLoading}>
             Войти
           </Button>
 
