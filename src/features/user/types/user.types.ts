@@ -1,7 +1,7 @@
 import { UserRole } from './user-role.enum.ts';
 
 export type User = {
-  id: number;
+  id: string;
   username: string;
   email: string;
   lastName: string;
@@ -15,7 +15,7 @@ export type User = {
 };
 
 export type UserForNews = {
-  id: number;
+  id: string;
   lastName: string;
   firstName: string;
   surname?: string;

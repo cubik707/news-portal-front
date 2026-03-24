@@ -19,10 +19,10 @@ const MainPage = () => {
   const { user } = useUser();
   const [activeTab, setActiveTab] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams();
-  const [selectedTag, setSelectedTag] = useState<number | null>(null);
+  const [selectedTag, setSelectedTag] = useState<string | null>(null);
 
   const categoryIdParam = searchParams.get('category');
-  const selectedCategoryId = categoryIdParam ? Number(categoryIdParam) : null;
+  const selectedCategoryId = categoryIdParam ?? null;
 
   const {
     data: newsByStatusData,
@@ -61,7 +61,7 @@ const MainPage = () => {
   useEffect(() => {
     if (!categoriesList.length) return;
 
-    const categoryId = Number(searchParams.get('category'));
+    const categoryId = searchParams.get('category');
     const index = categoriesList.findIndex((c) => c.id === categoryId);
     setActiveTab(index !== -1 ? index + 1 : 0);
   }, [categoriesList, searchParams]);
@@ -79,7 +79,7 @@ const MainPage = () => {
     );
   }, [newsList, selectedTag]);
 
-  const handleTagClick = (tagId: number) => {
+  const handleTagClick = (tagId: string) => {
     setSelectedTag(prev => prev === tagId ? null : tagId);
     setSearchParams(prev => {
       const newParams = new URLSearchParams(prev);

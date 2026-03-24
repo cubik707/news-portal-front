@@ -63,11 +63,10 @@ export const EditNewsPost = () => {
     if (newsData) {
       const newsItem = Array.isArray(newsData) ? newsData[0] : newsData;
 
-      // Явное преобразование categoryId к number
       reset({
         ...newsItem,
         tags: newsItem.tags.map((tag: { name: string }) => tag.name).join(', '),
-        categoryId: Number(newsItem.category.id),
+        categoryId: newsItem.category.id,
       });
     }
   }, [newsData, reset]);
@@ -115,18 +114,17 @@ export const EditNewsPost = () => {
         dispatch(setAppError({ error: 'Пользователь не авторизован' }));
         return;
       }
-      const numId = Number(id!)
       const updateData: NewsUpdate = {
-        id: numId,
+        id: id!,
         title: data.title,
         content: data.content,
         image: data.image,
         authorId: user.id,
         tags: data.tags.split(',').map(tag => tag.trim()),
-        categoryId: Number(data.categoryId), // Явное преобразование типа
+        categoryId: data.categoryId,
       };
 
-      await updateNews({ newsUpdated: updateData, id: numId }).unwrap(); // Упрощенный вызов мутации
+      await updateNews({ newsUpdated: updateData, id: id! }).unwrap();
       navigate(-1);
     } catch (error: any) {
       dispatch(setAppError({ error: error?.data?.message || 'Ошибка обновления новости' }));

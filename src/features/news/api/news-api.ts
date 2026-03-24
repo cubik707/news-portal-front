@@ -6,7 +6,7 @@ import { NewsStatus } from '../types/news-status.enum.ts';
 
 export const newsApi = baseApi.injectEndpoints({
   endpoints: builder => ({
-    getNewsByCategoryAndStatus: builder.query<SuccessResponse<News[]>, { categoryId: number, status: NewsStatus }>({
+    getNewsByCategoryAndStatus: builder.query<SuccessResponse<News[]>, { categoryId: string, status: NewsStatus }>({
       query: ({ categoryId, status }) => ({
         url: `news/category/${categoryId}/status`,
         params: { status },
@@ -24,7 +24,7 @@ export const newsApi = baseApi.injectEndpoints({
         { type: 'News' as const, id: `STATUS_${status}` },
       ],
     }),
-    getNewsByStatusAndAuthorId: builder.query<SuccessResponse<News[]>, {status: NewsStatus, authorId: number}>({
+    getNewsByStatusAndAuthorId: builder.query<SuccessResponse<News[]>, {status: NewsStatus, authorId: string}>({
       query: ({status, authorId}) => ({
         url: `news/author/${authorId}/status`,
         params: { status: NewsStatus[status] },
@@ -33,7 +33,7 @@ export const newsApi = baseApi.injectEndpoints({
         { type: 'News' as const, id: `STATUS_${status}` },
       ],
     }),
-    getOneNews: builder.query<SuccessResponse<News>, number>({
+    getOneNews: builder.query<SuccessResponse<News>, string>({
       query: (id) => `news/${id}`
     }),
     createNews: builder.mutation<SuccessResponse<News>, NewsCreate>({
@@ -43,7 +43,7 @@ export const newsApi = baseApi.injectEndpoints({
         body: NewsCreate,
       }),
     }),
-    deleteNews: builder.mutation<SuccessResponse<null>, number>({
+    deleteNews: builder.mutation<SuccessResponse<null>, string>({
       query: (id) => ({
         url: `news/${id}`,
         method: HttpMethod.DELETE,
@@ -52,7 +52,7 @@ export const newsApi = baseApi.injectEndpoints({
         { type: 'News' as const },
       ],
     }),
-    updateNews: builder.mutation<SuccessResponse<News>, {newsUpdated: NewsUpdate, id: number}>({
+    updateNews: builder.mutation<SuccessResponse<News>, {newsUpdated: NewsUpdate, id: string}>({
       query: ({ id, newsUpdated }) => ({
         url: `news/${id}`,
         method: HttpMethod.PUT,

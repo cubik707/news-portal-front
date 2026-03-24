@@ -11,8 +11,8 @@ import { Tag } from '../types/tags.types.ts';
 type TagsBlockProps = {
   items: Tag[];
   isLoading?: boolean;
-  selectedTagId?: number | null;
-  onTagClick?: (tagId: number) => void;
+  selectedTagId?: string | null;
+  onTagClick?: (tagId: string) => void;
 }
 
 export const TagsBlock = ({
@@ -21,7 +21,7 @@ export const TagsBlock = ({
                             selectedTagId = null,
                             onTagClick
                           }: TagsBlockProps) => {
-  const handleClick = (tagId: number) => {
+  const handleClick = (tagId: string) => {
     if (onTagClick) {
       onTagClick(tagId);
     }

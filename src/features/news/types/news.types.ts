@@ -3,7 +3,7 @@ import { Tag } from '../../tags/types/tags.types.ts';
 import { Category } from '../../category/types/category.types.ts';
 
 export type News = {
-  id: number,
+  id: string,
   title: string,
   content: string,
   image: string,
@@ -17,17 +17,17 @@ export type NewsCreate = {
   title: string,
   content: string,
   image: string,
-  authorId: number,
+  authorId: string,
   tags: string[],
-  categoryId: number,
+  categoryId: string,
 }
 
 export type NewsUpdate = {
-  id: number,
+  id: string,
   title: string,
   content: string,
   image: string,
-  authorId: number,
+  authorId: string,
   tags: string[],
-  categoryId: number,
+  categoryId: string,
 }
