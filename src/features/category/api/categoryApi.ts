@@ -4,17 +4,17 @@ import { Category } from '../types/category.types.ts';
 import { HttpMethod } from '../../../common/enums';
 
 export const categoryApi = baseApi.injectEndpoints({
-  endpoints: (builder) => ({
+  endpoints: builder => ({
     getAllCategories: builder.query<SuccessResponse<Category[]>, void>({
       query: () => 'categories',
     }),
     getOneCategory: builder.query<SuccessResponse<Category>, number>({
-      query: (id) => ({
+      query: id => ({
         url: `categorys/${id}`,
       }),
     }),
     createCategory: builder.mutation<SuccessResponse<Category>, { name: string }>({
-      query: (name) => ({
+      query: name => ({
         url: 'categories',
         method: HttpMethod.POST,
         body: {
@@ -22,7 +22,7 @@ export const categoryApi = baseApi.injectEndpoints({
         },
       }),
     }),
-    updateCategory: builder.mutation<SuccessResponse<Category>, { id: number, name: string }>({
+    updateCategory: builder.mutation<SuccessResponse<Category>, { id: number; name: string }>({
       query: ({ id, name }) => ({
         url: `categories/${id}`,
         method: HttpMethod.PUT,
@@ -32,7 +32,7 @@ export const categoryApi = baseApi.injectEndpoints({
       }),
     }),
     deleteCategory: builder.mutation<SuccessResponse<null>, number>({
-      query: (id) => ({
+      query: id => ({
         url: `categories/${id}`,
         method: HttpMethod.DELETE,
       }),

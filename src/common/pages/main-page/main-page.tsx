@@ -6,7 +6,10 @@ import { TagsBlock } from '../../../features/tags/ui/tags-block.tsx';
 import { CommentsBlock } from '../../../features/comments/ui/comments-block/comments-block.tsx';
 import { Container, Skeleton } from '@mui/material';
 import { Header } from '../../components/header/header.tsx';
-import { useGetNewsByCategoryAndStatusQuery, useGetNewsByStatusQuery } from '../../../features/news/api/news-api.ts';
+import {
+  useGetNewsByCategoryAndStatusQuery,
+  useGetNewsByStatusQuery,
+} from '../../../features/news/api/news-api.ts';
 import { NewsStatus } from '../../../features/news/types/news-status.enum.ts';
 import { useGetLast3TagsQuery } from '../../../features/tags/api/tagsApi.ts';
 import { useGetAllCategoriesQuery } from '../../../features/category/api/categoryApi.ts';
@@ -24,25 +27,23 @@ const MainPage = () => {
   const categoryIdParam = searchParams.get('category');
   const selectedCategoryId = categoryIdParam ?? null;
 
-  const {
-    data: newsByStatusData,
-    isLoading: isNewsByStatusLoading,
-  } = useGetNewsByStatusQuery(NewsStatus.published, {
-    skip: selectedCategoryId !== null,
-  });
-
-  const {
-    data: newsByCategoryData,
-    isLoading: isNewsByCategoryLoading,
-  } = useGetNewsByCategoryAndStatusQuery(
+  const { data: newsByStatusData, isLoading: isNewsByStatusLoading } = useGetNewsByStatusQuery(
+    NewsStatus.published,
     {
-      categoryId: selectedCategoryId!,
-      status: NewsStatus.published,
-    },
-    {
-      skip: selectedCategoryId === null,
-    },
+      skip: selectedCategoryId !== null,
+    }
   );
+
+  const { data: newsByCategoryData, isLoading: isNewsByCategoryLoading } =
+    useGetNewsByCategoryAndStatusQuery(
+      {
+        categoryId: selectedCategoryId!,
+        status: NewsStatus.published,
+      },
+      {
+        skip: selectedCategoryId === null,
+      }
+    );
 
   const newsList = useMemo(() => {
     return selectedCategoryId === null
@@ -50,7 +51,8 @@ const MainPage = () => {
       : newsByCategoryData?.data || [];
   }, [newsByStatusData, newsByCategoryData, selectedCategoryId]);
 
-  const isNewsLoading = selectedCategoryId === null ? isNewsByStatusLoading : isNewsByCategoryLoading;
+  const isNewsLoading =
+    selectedCategoryId === null ? isNewsByStatusLoading : isNewsByCategoryLoading;
 
   const { data: tagsData, isLoading: isTagsLoading } = useGetLast3TagsQuery();
   const lastTags = tagsData?.data || [];
@@ -62,7 +64,7 @@ const MainPage = () => {
     if (!categoriesList.length) return;
 
     const categoryId = searchParams.get('category');
-    const index = categoriesList.findIndex((c) => c.id === categoryId);
+    const index = categoriesList.findIndex(c => c.id === categoryId);
     setActiveTab(index !== -1 ? index + 1 : 0);
   }, [categoriesList, searchParams]);
 
@@ -74,13 +76,11 @@ const MainPage = () => {
 
   const filteredNews = useMemo(() => {
     if (!selectedTag) return newsList;
-    return newsList.filter(news =>
-      news.tags.some(tag => tag.id === selectedTag)
-    );
+    return newsList.filter(news => news.tags.some(tag => tag.id === selectedTag));
   }, [newsList, selectedTag]);
 
   const handleTagClick = (tagId: string) => {
-    setSelectedTag(prev => prev === tagId ? null : tagId);
+    setSelectedTag(prev => (prev === tagId ? null : tagId));
     setSearchParams(prev => {
       const newParams = new URLSearchParams(prev);
       if (selectedTag === tagId) {
@@ -108,32 +108,28 @@ const MainPage = () => {
           value={activeTab}
           onChange={(_, newValue: number) => onChangeActiveCategory(newValue)}
           style={{ marginBottom: 15 }}
-          aria-label="basic tabs example">
+          aria-label="basic tabs example"
+        >
           <Tab label="All" />
-          {isCategoriesLoading ? (
-            Array(3).fill(null).map((_, index) => (
-              <Tab
-                key={index}
-                disabled
-                label={
-                  <Skeleton
-                    variant="text"
-                    width={80}
-                    height={40}
-                    animation="wave"
-                    sx={{ mx: 1 }}
+          {isCategoriesLoading
+            ? Array(3)
+                .fill(null)
+                .map((_, index) => (
+                  <Tab
+                    key={index}
+                    disabled
+                    label={
+                      <Skeleton
+                        variant="text"
+                        width={80}
+                        height={40}
+                        animation="wave"
+                        sx={{ mx: 1 }}
+                      />
+                    }
                   />
-                }
-              />
-            ))
-          ) : (
-            categoriesList.map((category) => (
-              <Tab
-                key={category.id}
-                label={category.name}
-              />
-            ))
-          )}
+                ))
+            : categoriesList.map(category => <Tab key={category.id} label={category.name} />)}
         </Tabs>
         <Grid container spacing={4}>
           <Grid size={{ xs: 8 }}>
@@ -153,7 +149,7 @@ const MainPage = () => {
                   tags={news.tags}
                   isEditable={user?.id === news.author.id}
                 />
-              ),
+              )
             )}
           </Grid>
           <Grid size={{ xs: 4 }}>

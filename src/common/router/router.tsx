@@ -31,69 +31,69 @@ export const router = createBrowserRouter([
         element: <RegisterPage />,
       },
       {
-        element: <ProtectedLayout/>,
+        element: <ProtectedLayout />,
         children: [
           {
             index: true,
-            element: <MainPage />
+            element: <MainPage />,
           },
           {
             path: 'news/:id',
-            element: <NewsFullPost/>
+            element: <NewsFullPost />,
           },
           {
             path: 'news/:id/edit',
-            element: <EditNewsPost/>
+            element: <EditNewsPost />,
           },
           {
             path: 'news/create',
-            element: <AddNewsPost/>
+            element: <AddNewsPost />,
           },
           {
             path: 'account',
-            element: <AccountPage/>,
+            element: <AccountPage />,
             children: [
               {
                 path: 'profile',
-                element: <ProfileLayout/>
+                element: <ProfileLayout />,
               },
               {
                 path: 'comments',
-                element: <MyCommentsLayout/>
+                element: <MyCommentsLayout />,
               },
               {
                 path: 'editor',
                 children: [
                   {
                     path: 'drafted-news',
-                    element: <DraftedNewsLayout/>
-                  }
-                ]
+                    element: <DraftedNewsLayout />,
+                  },
+                ],
               },
               {
                 path: 'admin',
                 children: [
                   {
                     path: 'users',
-                    element: <UserManagementLayout/>
+                    element: <UserManagementLayout />,
                   },
                   {
                     path: 'news',
-                    element: <CheckNews/>
+                    element: <CheckNews />,
                   },
                   {
                     path: 'аmendment',
-                    element: <AmendmentLayout/>
+                    element: <AmendmentLayout />,
                   },
                   {
                     path: 'news/:id',
-                    element: <AdminNewsReview/>
-                  }
-                ]
-              }
-            ]
+                    element: <AdminNewsReview />,
+                  },
+                ],
+              },
+            ],
           },
-        ]
+        ],
       },
       {
         path: '*',

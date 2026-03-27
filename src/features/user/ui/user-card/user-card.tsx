@@ -19,7 +19,6 @@ import { useGetUsersQuery, useUpdateUserFieldMutation } from '../../api/userApi.
 import { useAppDispatch } from '../../../../common/hooks';
 import { setAppError } from '../../../../app/app-slice.ts';
 
-
 interface UserCardProps {
   user: User;
   onApprove: (userId: number) => void;
@@ -27,9 +26,14 @@ interface UserCardProps {
   onRoleChange: (userId: number, role: UserRole, checked: boolean) => void;
 }
 
-export const UserCard: React.FC<UserCardProps> = ({ user, onApprove, onDisapprove, onRoleChange }) => {
+export const UserCard: React.FC<UserCardProps> = ({
+  user,
+  onApprove,
+  onDisapprove,
+  onRoleChange,
+}) => {
   const [updateUserField] = useUpdateUserFieldMutation();
-  const {refetch} = useGetUsersQuery()
+  const { refetch } = useGetUsersQuery();
   const dispatch = useAppDispatch();
 
   const handleSaveField = async (field: keyof UserFieldObject, value: string) => {
@@ -56,7 +60,10 @@ export const UserCard: React.FC<UserCardProps> = ({ user, onApprove, onDisapprov
     <Card sx={{ mb: 2 }}>
       <CardHeader
         avatar={
-          <Avatar sx={{ width: 115, height: 115 }} src={`${import.meta.env.VITE_API_BASE_URL}${user!.avatarUrl}`} />
+          <Avatar
+            sx={{ width: 115, height: 115 }}
+            src={`${import.meta.env.VITE_API_BASE_URL}${user!.avatarUrl}`}
+          />
         }
         title={
           <Box
@@ -72,58 +79,62 @@ export const UserCard: React.FC<UserCardProps> = ({ user, onApprove, onDisapprov
               },
             }}
           >
-
             <EditableSpan
               value={user.lastName}
-              onChange={(v) => handleSaveField('lastName', v)}
+              onChange={v => handleSaveField('lastName', v)}
               isAdmin={true}
               max-width={'40px'}
             />
             <EditableSpan
               value={user.firstName}
-              onChange={(v) => handleSaveField('firstName', v)}
+              onChange={v => handleSaveField('firstName', v)}
               isAdmin={true}
             />
             <EditableSpan
               value={user.surname || ''}
-              onChange={(v) => handleSaveField('surname', v)}
+              onChange={v => handleSaveField('surname', v)}
               isAdmin={true}
             />
           </Box>
         }
         subheader={
-          <Box sx={{
-            mt: 0.5,
-            '& .MuiTypography-root': {
-              color: 'text.secondary',
-              fontSize: '0.875rem',
-            },
-          }}>
+          <Box
+            sx={{
+              mt: 0.5,
+              '& .MuiTypography-root': {
+                color: 'text.secondary',
+                fontSize: '0.875rem',
+              },
+            }}
+          >
             <EditableSpan
               value={user.position}
-              onChange={(v) => handleSaveField('position', v)}
-              isAdmin={true} />
+              onChange={v => handleSaveField('position', v)}
+              isAdmin={true}
+            />
           </Box>
         }
       />
       <CardContent>
-        <Box sx={{
-          '& > *': {
-            display: 'flex',
-            alignItems: 'center',
-            gap: 1,
-            height: '35px',
-          },
-          '& > * > .MuiTypography-body1': {
-            fontWeight: 'bold',
-          },
-        }}>
+        <Box
+          sx={{
+            '& > *': {
+              display: 'flex',
+              alignItems: 'center',
+              gap: 1,
+              height: '35px',
+            },
+            '& > * > .MuiTypography-body1': {
+              fontWeight: 'bold',
+            },
+          }}
+        >
           <Box>
             <Typography variant="body1"> Логин: </Typography>
             <EditableSpan
               maxWidth={'250px'}
               value={`${user?.username}`}
-              onChange={(v) => handleSaveField('username', v)}
+              onChange={v => handleSaveField('username', v)}
               isAdmin={true}
             />
           </Box>
@@ -132,7 +143,7 @@ export const UserCard: React.FC<UserCardProps> = ({ user, onApprove, onDisapprov
             <EditableSpan
               maxWidth={'250px'}
               value={`${user?.email}`}
-              onChange={(v) => handleSaveField('email', v)}
+              onChange={v => handleSaveField('email', v)}
               isAdmin={true}
             />
           </Box>
@@ -141,15 +152,18 @@ export const UserCard: React.FC<UserCardProps> = ({ user, onApprove, onDisapprov
             <EditableSpan
               maxWidth={'250px'}
               value={`${user?.department}`}
-              onChange={(v) => handleSaveField('department', v)}
+              onChange={v => handleSaveField('department', v)}
               isAdmin={true}
             />
           </Box>
         </Box>
 
         <FormGroup sx={{ mt: 2 }}>
-          <Typography variant="subtitle1"> <strong>Роли:</strong> </Typography>
-          {Object.values(UserRole).map((role) => (
+          <Typography variant="subtitle1">
+            {' '}
+            <strong>Роли:</strong>{' '}
+          </Typography>
+          {Object.values(UserRole).map(role => (
             <FormControlLabel
               key={role}
               control={
@@ -210,10 +224,7 @@ export const UserCard: React.FC<UserCardProps> = ({ user, onApprove, onDisapprov
               Отклонить
             </Button>
           </Box>
-        )
-        }
-
-
+        )}
       </CardContent>
     </Card>
   );

@@ -3,46 +3,45 @@ import { SuccessResponse } from '../../../common/types';
 import { RoleObj, User, UserFieldObject } from '../types/user.types.ts';
 import { HttpMethod } from '../../../common/enums';
 
-
 export const userApi = baseApi.injectEndpoints({
   endpoints: builder => ({
     getUsers: builder.query<SuccessResponse<User[]>, void>({
       query: () => 'users',
     }),
-    updateUser: builder.mutation<SuccessResponse<User>, {id: string, user: User}>({
-      query: ({id, user}) => ({
+    updateUser: builder.mutation<SuccessResponse<User>, { id: string; user: User }>({
+      query: ({ id, user }) => ({
         method: HttpMethod.PUT,
         url: `users/${id}`,
-        body: user
+        body: user,
       }),
     }),
-    updateUserField: builder.mutation<void, {id:number, userFiled: UserFieldObject}>({
-      query: ({id, userFiled}) => ({
+    updateUserField: builder.mutation<void, { id: number; userFiled: UserFieldObject }>({
+      query: ({ id, userFiled }) => ({
         method: HttpMethod.PATCH,
         url: `users/${id}`,
-        body: userFiled
-      })
+        body: userFiled,
+      }),
     }),
     deleteUser: builder.mutation<SuccessResponse<null>, string>({
-      query: (id) => ({
+      query: id => ({
         method: HttpMethod.DELETE,
         url: `users/${id}`,
-      })
+      }),
     }),
     approveUser: builder.mutation<SuccessResponse<User>, string>({
-      query: (id) => ({
+      query: id => ({
         method: HttpMethod.PATCH,
         url: `/users/${id}/approve`,
-      })
+      }),
     }),
-    assignRole: builder.mutation<SuccessResponse<User>, {id: string, role: RoleObj}> ({
+    assignRole: builder.mutation<SuccessResponse<User>, { id: string; role: RoleObj }>({
       query: ({ id, role }) => ({
         method: HttpMethod.PATCH,
         url: `/users/${id}/roles`,
-        body: role
-      })
+        body: role,
+      }),
     }),
-    removeRole: builder.mutation<SuccessResponse<User>, {id: string, role: RoleObj}>({
+    removeRole: builder.mutation<SuccessResponse<User>, { id: string; role: RoleObj }>({
       query: ({ id, role }) => ({
         method: HttpMethod.DELETE,
         url: `/users/${id}/roles`,
@@ -52,12 +51,12 @@ export const userApi = baseApi.injectEndpoints({
   }),
 });
 
-  export const {
-    useGetUsersQuery,
-    useUpdateUserFieldMutation,
-    useUpdateUserMutation,
-    useDeleteUserMutation,
-    useApproveUserMutation,
-    useAssignRoleMutation,
-    useRemoveRoleMutation,
-  } = userApi;
+export const {
+  useGetUsersQuery,
+  useUpdateUserFieldMutation,
+  useUpdateUserMutation,
+  useDeleteUserMutation,
+  useApproveUserMutation,
+  useAssignRoleMutation,
+  useRemoveRoleMutation,
+} = userApi;

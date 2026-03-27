@@ -1,5 +1,5 @@
 export enum NewsStatus {
-  draft = "draft",
-  published = "published",
-  archived = "archived"
+  draft = 'draft',
+  published = 'published',
+  archived = 'archived',
 }

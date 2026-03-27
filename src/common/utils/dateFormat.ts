@@ -5,7 +5,7 @@ export const formatDateTime = (
     month: 'long',
     year: 'numeric',
     hour: 'numeric',
-    minute: 'numeric'
+    minute: 'numeric',
   },
   locale: string = 'ru-RU'
 ): string => {

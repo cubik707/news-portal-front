@@ -3,21 +3,21 @@ import { SuccessResponse } from '../../../common/types';
 import { HttpMethod } from '../../../common/enums';
 
 export const uploadApi = baseApi.injectEndpoints({
-  endpoints: (builder) => ({
+  endpoints: builder => ({
     uploadImage: builder.mutation<SuccessResponse<string>, FormData>({
-      query: (body) => ({
+      query: body => ({
         url: '/upload',
         method: HttpMethod.POST,
         body,
       }),
     }),
     deleteImage: builder.mutation<SuccessResponse<null>, FormData>({
-      query: (body) => ({
+      query: body => ({
         url: '/delete-image',
         method: HttpMethod.DELETE,
-        body
-      })
-    })
+        body,
+      }),
+    }),
   }),
 });
 

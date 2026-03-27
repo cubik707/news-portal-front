@@ -1,7 +1,7 @@
 export type LoginArgs = {
-  username: string
-  password: string
-}
+  username: string;
+  password: string;
+};
 
 export type RegisterArgs = {
   username: string;
@@ -12,4 +12,4 @@ export type RegisterArgs = {
   surname: string;
   position: string;
   department: string;
-}
+};

@@ -24,8 +24,6 @@ export type UserForNews = {
 
 export type RoleObj = {
   role: UserRole;
-}
+};
 
-export type UserFieldObject = Partial<
-  Pick<User, Exclude<keyof User, 'id' | 'roles' | 'approved'>>
->;
+export type UserFieldObject = Partial<Pick<User, Exclude<keyof User, 'id' | 'roles' | 'approved'>>>;

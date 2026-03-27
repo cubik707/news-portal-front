@@ -28,7 +28,7 @@ const schema = yup.object().shape({
 });
 
 const LoginPage = () => {
-  const isLoggedIn = useAppSelector(selectIsLoggedIn)
+  const isLoggedIn = useAppSelector(selectIsLoggedIn);
   const [login, { isLoading }] = useLoginMutation();
   const dispatch = useAppDispatch();
   const [loginError, setLoginError] = useState<string | null>(null);
@@ -46,7 +46,7 @@ const LoginPage = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<LoginArgs> = async (data) => {
+  const onSubmit: SubmitHandler<LoginArgs> = async data => {
     try {
       const res = await login(data).unwrap();
       authTokenManager.setAccessToken(res.data.token);
@@ -129,7 +129,6 @@ const LoginPage = () => {
           <Button type="submit" size="large" variant="contained" fullWidth disabled={isLoading}>
             Войти
           </Button>
-
 
           <Typography sx={{ mt: 2, textAlign: 'center' }}>
             Нет аккаунта?{' '}

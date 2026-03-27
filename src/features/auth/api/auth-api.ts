@@ -21,14 +21,14 @@ export const authApi = baseApi.injectEndpoints({
           method: HttpMethod.POST,
           url: '/register',
           body: payload,
-        }
-      }
+        };
+      },
     }),
     verifyToken: builder.query<SuccessResponse, void>({
       query: () => ({
         method: HttpMethod.GET,
         url: '/verify-token',
-      })
+      }),
     }),
     me: builder.query<SuccessResponse<User>, void>({
       query: () => '/me',

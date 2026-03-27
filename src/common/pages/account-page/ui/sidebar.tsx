@@ -30,18 +30,21 @@ const Sidebar = () => {
   }
 
   return (
-    <Drawer variant="permanent" sx={{
-      width: 240,
-      flexShrink: 0,
-      zIndex: 1000,
-      minHeight: '100vh',
-      '& .MuiDrawer-paper': {
+    <Drawer
+      variant="permanent"
+      sx={{
         width: 240,
-        boxSizing: 'border-box',
-        position: 'relative',
-        overflowX: 'hidden',
-      },
-    }}>
+        flexShrink: 0,
+        zIndex: 1000,
+        minHeight: '100vh',
+        '& .MuiDrawer-paper': {
+          width: 240,
+          boxSizing: 'border-box',
+          position: 'relative',
+          overflowX: 'hidden',
+        },
+      }}
+    >
       <Box sx={{ width: 240, py: 4 }}>
         <List>
           {menuItems
@@ -53,7 +56,7 @@ const Sidebar = () => {
                 selected={location.pathname === item.path}
                 onClick={() => navigate(item.path)}
               >
-                <ListItemText sx={{px: 2}} primary={item.label} />
+                <ListItemText sx={{ px: 2 }} primary={item.label} />
               </ListItemButton>
             ))}
         </List>

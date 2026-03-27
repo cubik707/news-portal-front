@@ -23,7 +23,6 @@ function App() {
       } else if (error) {
         authTokenManager.removeAccessToken();
       }
-
     }
   }, [isLoading, data]);
 

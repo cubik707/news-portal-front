@@ -9,7 +9,6 @@ export const MyCommentsLayout = () => {
     console.log('Удалить комментарий:', commentId);
   };
 
-
   return (
     <CommentsBlock
       items={[

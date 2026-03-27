@@ -11,7 +11,6 @@ import { useUser } from '../../context/user-context.tsx';
 import { UserRole } from '../../../features/user/types/user-role.enum.ts';
 import LinearProgress from '@mui/material/LinearProgress';
 
-
 export const Header = () => {
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const dispatch = useAppDispatch();
@@ -31,16 +30,18 @@ export const Header = () => {
         bgcolor: 'background.paper',
         color: 'text.primary',
         boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
-        zIndex: (theme) => theme.zIndex.drawer + 1,
+        zIndex: theme => theme.zIndex.drawer + 1,
       }}
     >
       <Container maxWidth="lg">
-        <Toolbar sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          px: 0,
-          minHeight: 'var(--header-height)',
-        }} disableGutters
+        <Toolbar
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            px: 0,
+            minHeight: 'var(--header-height)',
+          }}
+          disableGutters
         >
           <Box display="flex" alignItems="center">
             <Button
@@ -66,21 +67,23 @@ export const Header = () => {
           <Box display="flex" gap={1}>
             {isLoggedIn && (
               <>
-                {isEditor && (<Button
-                  component={Link}
-                  to="/news/create"
-                  variant="outlined"
-                  color="primary"
-                  startIcon={<ArticleIcon />}
-                  sx={{
-                    textTransform: 'none',
-                    px: 3,
-                    borderWidth: 2,
-                    '&:hover': { borderWidth: 2 },
-                  }}
-                >
-                  Написать статью
-                </Button>)}
+                {isEditor && (
+                  <Button
+                    component={Link}
+                    to="/news/create"
+                    variant="outlined"
+                    color="primary"
+                    startIcon={<ArticleIcon />}
+                    sx={{
+                      textTransform: 'none',
+                      px: 3,
+                      borderWidth: 2,
+                      '&:hover': { borderWidth: 2 },
+                    }}
+                  >
+                    Написать статью
+                  </Button>
+                )}
                 <Button
                   component={Link}
                   to="/account/profile"
@@ -117,7 +120,7 @@ export const Header = () => {
           </Box>
         </Toolbar>
       </Container>
-      {isLoading && <LinearProgress/>}
+      {isLoading && <LinearProgress />}
     </AppBar>
   );
 };

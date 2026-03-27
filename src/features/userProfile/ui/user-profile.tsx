@@ -12,16 +12,16 @@ type UserProfileProps = {
   user: User | null;
   isLoading: boolean;
   isAdmin: boolean | undefined;
-}
+};
 
-export const UserProfile = ({user, isLoading, isAdmin}: UserProfileProps) => {
+export const UserProfile = ({ user, isLoading, isAdmin }: UserProfileProps) => {
   const [updateUserField] = useUpdateUserFieldMutation();
   const { refetch } = useAuthUser();
   const dispatch = useAppDispatch();
 
   const handleSaveField = async (field: keyof UserFieldObject, value: string) => {
     if (!user) return;
-    const userFiled = {[field]: value}
+    const userFiled = { [field]: value };
 
     try {
       await updateUserField({ id: user.id, userFiled }).unwrap();
@@ -39,22 +39,27 @@ export const UserProfile = ({user, isLoading, isAdmin}: UserProfileProps) => {
 
   return (
     <Card sx={{ p: 3 }}>
-      <Typography variant="h5" gutterBottom>Профиль пользователя</Typography>
+      <Typography variant="h5" gutterBottom>
+        Профиль пользователя
+      </Typography>
       <Divider sx={{ my: 2 }} />
       <Box display="flex" alignItems="flex-start" gap={5}>
-        <Avatar sx={{ width: 115, height: 115 }} src={`${import.meta.env.VITE_API_BASE_URL}${user!.avatarUrl}`} />
+        <Avatar
+          sx={{ width: 115, height: 115 }}
+          src={`${import.meta.env.VITE_API_BASE_URL}${user!.avatarUrl}`}
+        />
 
         <Box
           sx={{
             '& > *': {
-              display: "flex",
-              alignItems:"center",
+              display: 'flex',
+              alignItems: 'center',
               gap: 1,
-              height: '35px'
+              height: '35px',
             },
             '& .MuiTypography-subtitle2': {
-              fontWeight: 'bold'
-            }
+              fontWeight: 'bold',
+            },
           }}
         >
           <Box display="flex" alignItems="center" gap={1}>
@@ -62,16 +67,16 @@ export const UserProfile = ({user, isLoading, isAdmin}: UserProfileProps) => {
             <EditableSpan
               maxWidth={'250px'}
               value={`${user?.lastName}`}
-              onChange={(v) => handleSaveField('lastName', v)}
+              onChange={v => handleSaveField('lastName', v)}
               isAdmin={isAdmin}
             />
           </Box>
-          <Box >
+          <Box>
             <Typography variant="subtitle2">Имя:</Typography>
             <EditableSpan
               maxWidth={'250px'}
               value={`${user?.firstName}`}
-              onChange={(v) => handleSaveField('firstName', v)}
+              onChange={v => handleSaveField('firstName', v)}
               isAdmin={isAdmin}
             />
           </Box>
@@ -80,7 +85,7 @@ export const UserProfile = ({user, isLoading, isAdmin}: UserProfileProps) => {
             <EditableSpan
               maxWidth={'250px'}
               value={`${user?.surname}`}
-              onChange={(v) => handleSaveField('surname', v)}
+              onChange={v => handleSaveField('surname', v)}
               isAdmin={isAdmin}
             />
           </Box>
@@ -89,7 +94,7 @@ export const UserProfile = ({user, isLoading, isAdmin}: UserProfileProps) => {
             <EditableSpan
               maxWidth={'250px'}
               value={`${user?.username}`}
-              onChange={(v) => handleSaveField('username', v)}
+              onChange={v => handleSaveField('username', v)}
               isAdmin={isAdmin}
             />
           </Box>
@@ -98,7 +103,7 @@ export const UserProfile = ({user, isLoading, isAdmin}: UserProfileProps) => {
             <EditableSpan
               maxWidth={'250px'}
               value={`${user?.email}`}
-              onChange={(v) => handleSaveField('email', v)}
+              onChange={v => handleSaveField('email', v)}
               isAdmin={isAdmin}
             />
           </Box>
@@ -107,7 +112,7 @@ export const UserProfile = ({user, isLoading, isAdmin}: UserProfileProps) => {
             <EditableSpan
               maxWidth={'250px'}
               value={`${user?.department}`}
-              onChange={(v) => handleSaveField('department', v)}
+              onChange={v => handleSaveField('department', v)}
               isAdmin={isAdmin}
             />
           </Box>
@@ -116,7 +121,7 @@ export const UserProfile = ({user, isLoading, isAdmin}: UserProfileProps) => {
             <EditableSpan
               maxWidth={'400px'}
               value={`${user?.position}`}
-              onChange={(v) => handleSaveField('position', v)}
+              onChange={v => handleSaveField('position', v)}
               isAdmin={isAdmin}
             />
           </Box>

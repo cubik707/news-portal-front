@@ -3,7 +3,6 @@ import { ChangeRequestForm } from '../../../../features/userProfile/ui/change-re
 import { useUser } from '../../../context/user-context.tsx';
 import { UserRole } from '../../../../features/user/types/user-role.enum.ts';
 
-
 const ProfileLayout = () => {
   const { user, isLoading } = useUser();
 
@@ -12,9 +11,7 @@ const ProfileLayout = () => {
   return (
     <>
       <UserProfile user={user} isLoading={isLoading} isAdmin={isAdmin} />
-      {!isAdmin && (
-        <ChangeRequestForm onSubmit={(data) => alert(JSON.stringify(data))} />
-      )}
+      {!isAdmin && <ChangeRequestForm onSubmit={data => alert(JSON.stringify(data))} />}
     </>
   );
 };

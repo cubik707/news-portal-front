@@ -10,15 +10,33 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Typography
+  Typography,
 } from '@mui/material';
 
 export const AmendmentLayout = () => {
   // Mock data
   const amendments = [
-    { id: 1, user: 'Иван Иванов', type: 'Изменение данных', date: '2024-05-15', status: 'На рассмотрении' },
-    { id: 2, user: 'Петр Петров', type: 'Обновление документа', date: '2024-05-14', status: 'Принято' },
-    { id: 3, user: 'Сидор Сидоров', type: 'Корректировка реквизитов', date: '2024-05-13', status: 'Отклонено' },
+    {
+      id: 1,
+      user: 'Иван Иванов',
+      type: 'Изменение данных',
+      date: '2024-05-15',
+      status: 'На рассмотрении',
+    },
+    {
+      id: 2,
+      user: 'Петр Петров',
+      type: 'Обновление документа',
+      date: '2024-05-14',
+      status: 'Принято',
+    },
+    {
+      id: 3,
+      user: 'Сидор Сидоров',
+      type: 'Корректировка реквизитов',
+      date: '2024-05-13',
+      status: 'Отклонено',
+    },
   ];
 
   return (
@@ -45,7 +63,7 @@ export const AmendmentLayout = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {amendments.map((row) => (
+            {amendments.map(row => (
               <TableRow key={row.id}>
                 <TableCell>{row.id}</TableCell>
                 <TableCell>{row.user}</TableCell>
@@ -55,8 +73,11 @@ export const AmendmentLayout = () => {
                   <Chip
                     label={row.status}
                     color={
-                      row.status === 'Принято' ? 'success' :
-                        row.status === 'Отклонено' ? 'error' : 'primary'
+                      row.status === 'Принято'
+                        ? 'success'
+                        : row.status === 'Отклонено'
+                          ? 'error'
+                          : 'primary'
                     }
                   />
                 </TableCell>
