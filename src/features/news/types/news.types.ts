@@ -11,6 +11,7 @@ export type News = {
   tags: Tag[];
   publishedAt: string;
   category: Category;
+  commentCount: number;
 };
 
 export type NewsCreate = {

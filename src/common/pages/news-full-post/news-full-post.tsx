@@ -58,7 +58,7 @@ export const NewsFullPost = () => {
           author={news!.author}
           publishedAt={news!.publishedAt}
           likesCount={150}
-          commentsCount={comments.length}
+          commentCount={comments.length}
           tags={news!.tags}
           isFullPost
         >

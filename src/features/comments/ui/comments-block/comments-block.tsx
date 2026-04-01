@@ -65,7 +65,11 @@ export const CommentsBlock = ({
                 ) : (
                   <Avatar
                     alt={`${obj.author?.firstName} ${obj.author?.lastName}`}
-                    src={obj.author?.avatarUrl ? `${import.meta.env.VITE_API_BASE_URL}/${obj.author.avatarUrl}` : undefined}
+                    src={
+                      obj.author?.avatarUrl
+                        ? `${import.meta.env.VITE_API_BASE_URL}/${obj.author.avatarUrl}`
+                        : undefined
+                    }
                   />
                 )}
               </ListItemAvatar>
@@ -132,7 +136,7 @@ export const CommentsBlock = ({
                             <EditIcon fontSize="small" />
                           </IconButton>
                         ) : null}
-                        {(obj.author?.id === currentUserId || isAdmin) ? (
+                        {obj.author?.id === currentUserId || isAdmin ? (
                           <IconButton
                             onClick={() => onDeleteComment?.(obj.id)}
                             size="small"

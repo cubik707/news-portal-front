@@ -145,7 +145,7 @@ const MainPage = () => {
                   author={news.author}
                   publishedAt={news.publishedAt}
                   likesCount={150}
-                  commentsCount={3}
+                  commentCount={news.commentCount}
                   tags={news.tags}
                   isEditable={user?.id === news.author.id}
                 />

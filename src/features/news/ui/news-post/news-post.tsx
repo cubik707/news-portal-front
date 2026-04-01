@@ -16,7 +16,6 @@ import { useAppDispatch } from '../../../../common/hooks';
 
 type NewsProps = Omit<News, 'content' | 'category'> & {
   likesCount?: number;
-  commentsCount?: number;
   children?: ReactNode;
   isFullPost?: boolean;
   isEditable?: boolean;
@@ -30,7 +29,7 @@ const NewsPost = ({
   image,
   author,
   likesCount,
-  commentsCount,
+  commentCount,
   tags,
   children,
   isFullPost,
@@ -98,12 +97,10 @@ const NewsPost = ({
                 <span>{likesCount}</span>
               </li>
             )}
-            {commentsCount && (
-              <li>
-                <CommentIcon />
-                <span>{commentsCount}</span>
-              </li>
-            )}
+            <li>
+              <CommentIcon />
+              <span>{commentCount}</span>
+            </li>
           </ul>
         </div>
       </div>
