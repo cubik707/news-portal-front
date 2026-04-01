@@ -9,6 +9,10 @@ export const commentsApi = baseApi.injectEndpoints({
       query: newsId => `news/${newsId}/comments`,
       providesTags: (_result, _error, newsId) => [{ type: 'Comment' as const, id: newsId }],
     }),
+    getLastComments: builder.query<SuccessResponse<Comment[]>, void>({
+      query: () => `comments/last`,
+      providesTags: [{ type: 'Comment' as const, id: 'LAST' }],
+    }),
     createComment: builder.mutation<SuccessResponse<Comment>, { newsId: string; content: string }>({
       query: ({ newsId, content }) => ({
         url: `news/${newsId}/comments`,
@@ -40,6 +44,7 @@ export const commentsApi = baseApi.injectEndpoints({
 
 export const {
   useGetCommentsByNewsQuery,
+  useGetLastCommentsQuery,
   useCreateCommentMutation,
   useUpdateCommentMutation,
   useDeleteCommentMutation,

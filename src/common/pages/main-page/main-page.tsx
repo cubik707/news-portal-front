@@ -10,6 +10,7 @@ import {
   useGetNewsByCategoryAndStatusQuery,
   useGetNewsByStatusQuery,
 } from '../../../features/news/api/news-api.ts';
+import { useGetLastCommentsQuery } from '../../../features/comments/api/comments-api.ts';
 import { NewsStatus } from '../../../features/news/types/news-status.enum.ts';
 import { useGetLast3TagsQuery } from '../../../features/tags/api/tagsApi.ts';
 import { useGetAllCategoriesQuery } from '../../../features/category/api/categoryApi.ts';
@@ -53,6 +54,9 @@ const MainPage = () => {
 
   const isNewsLoading =
     selectedCategoryId === null ? isNewsByStatusLoading : isNewsByCategoryLoading;
+
+  const { data: lastCommentsData, isLoading: isLastCommentsLoading } = useGetLastCommentsQuery();
+  const lastComments = lastCommentsData?.data ?? [];
 
   const { data: tagsData, isLoading: isTagsLoading } = useGetLast3TagsQuery();
   const lastTags = tagsData?.data || [];
@@ -159,7 +163,7 @@ const MainPage = () => {
               selectedTagId={selectedTag}
               onTagClick={handleTagClick}
             />
-            <CommentsBlock items={[]} isLoading={false} />
+            <CommentsBlock items={lastComments} isLoading={isLastCommentsLoading} />
           </Grid>
         </Grid>
       </Container>
