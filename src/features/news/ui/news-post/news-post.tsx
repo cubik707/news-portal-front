@@ -47,7 +47,7 @@ const NewsPost = ({
       const message = err?.data?.message || err?.error || 'Произошла ошибка при удалении новости';
       dispatch(setAppError({ error: message }));
     }
-  }, [deleteNews]);
+  }, [deleteNews, dispatch, id]);
 
   return (
     <div className={clsx(styles.root, { [styles.rootFull]: isFullPost })}>

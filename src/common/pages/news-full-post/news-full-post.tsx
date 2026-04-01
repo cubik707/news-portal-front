@@ -18,11 +18,7 @@ import { UserRole } from '../../../features/user/types/user-role.enum.ts';
 export const NewsFullPost = () => {
   const { id } = useParams<{ id: string }>();
   const { data, isLoading, error } = useGetOneNewsQuery(id!);
-  const {
-    data: commentsData,
-    isLoading: commentsLoading,
-    isUninitialized: commentsUninitialized,
-  } = useGetCommentsByNewsQuery(id!);
+  const { data: commentsData, isLoading: commentsLoading } = useGetCommentsByNewsQuery(id!);
   const [updateComment] = useUpdateCommentMutation();
   const [deleteComment] = useDeleteCommentMutation();
   const { user } = useUser();
