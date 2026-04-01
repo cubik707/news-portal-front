@@ -11,6 +11,7 @@ export type Comment = {
   content: string;
   author: CommentAuthor;
   newsId: string;
+  news?: { id: string; title: string };
   createdAt: string;
   editedAt: string | null;
 };

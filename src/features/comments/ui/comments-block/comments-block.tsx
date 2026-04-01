@@ -6,6 +6,7 @@ import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import Skeleton from '@mui/material/Skeleton';
 import { Fragment, ReactNode, useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import { SideBlock } from '../../../tags/ui/side-block.tsx';
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
@@ -19,6 +20,7 @@ type CommentsBlockProps = {
   isLoading?: boolean;
   currentUserId?: string;
   isAdmin?: boolean;
+  showNewsContext?: boolean;
   onEditComment?: (commentId: string, newText: string) => void;
   onDeleteComment?: (commentId: string) => void;
 };
@@ -29,6 +31,7 @@ export const CommentsBlock = ({
   isLoading = true,
   currentUserId,
   isAdmin = false,
+  showNewsContext = false,
   onEditComment,
   onDeleteComment,
 }: CommentsBlockProps) => {
@@ -95,6 +98,7 @@ export const CommentsBlock = ({
                         fullWidth
                         multiline
                         variant="outlined"
+                        inputProps={{ 'aria-label': 'Редактировать текст комментария' }}
                       />
                       <div style={{ marginTop: 8, display: 'flex', gap: 8 }}>
                         <Button variant="contained" size="small" onClick={handleSaveEdit}>
@@ -108,7 +112,22 @@ export const CommentsBlock = ({
                   ) : (
                     <>
                       <ListItemText
-                        primary={`${obj.author?.firstName ?? ''} ${obj.author?.lastName ?? ''}`}
+                        primary={
+                          showNewsContext && obj.news ? (
+                            <RouterLink
+                              to={`/news/${obj.news.id}`}
+                              style={{
+                                fontSize: '0.85rem',
+                                color: 'inherit',
+                                textDecoration: 'underline',
+                              }}
+                            >
+                              {obj.news.title}
+                            </RouterLink>
+                          ) : (
+                            `${obj.author?.firstName ?? ''} ${obj.author?.lastName ?? ''}`
+                          )
+                        }
                         secondary={
                           <>
                             {obj.content}
@@ -129,20 +148,22 @@ export const CommentsBlock = ({
                       <div style={{ display: 'flex', marginLeft: 16 }}>
                         {obj.author?.id === currentUserId ? (
                           <IconButton
+                            aria-label="Редактировать комментарий"
                             onClick={() => handleStartEdit(obj.id, obj.content)}
                             size="small"
                             color="primary"
                           >
-                            <EditIcon fontSize="small" />
+                            <EditIcon fontSize="small" aria-hidden="true" />
                           </IconButton>
                         ) : null}
                         {obj.author?.id === currentUserId || isAdmin ? (
                           <IconButton
+                            aria-label="Удалить комментарий"
                             onClick={() => onDeleteComment?.(obj.id)}
                             size="small"
                             color="error"
                           >
-                            <DeleteIcon fontSize="small" />
+                            <DeleteIcon fontSize="small" aria-hidden="true" />
                           </IconButton>
                         ) : null}
                       </div>
