@@ -62,7 +62,7 @@ export const UserCard: React.FC<UserCardProps> = ({
         avatar={
           <Avatar
             sx={{ width: 115, height: 115 }}
-            src={`${import.meta.env.VITE_API_BASE_URL}${user!.avatarUrl}`}
+            src={`${import.meta.env.VITE_API_BASE_URL}/${user!.avatarUrl}`}
           />
         }
         title={

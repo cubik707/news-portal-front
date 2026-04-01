@@ -175,7 +175,7 @@ export const AddNewsPost = () => {
                 </Button>
                 <img
                   className={styles.image}
-                  src={`${import.meta.env.VITE_API_BASE_URL}${watch('image')}`}
+                  src={`${import.meta.env.VITE_API_BASE_URL}/${watch('image')}`}
                   alt="Uploaded"
                 />
               </>

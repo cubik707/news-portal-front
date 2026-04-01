@@ -63,7 +63,10 @@ export const CommentsBlock = ({
                 {isLoading ? (
                   <Skeleton variant="circular" width={40} height={40} />
                 ) : (
-                  <Avatar alt={`${obj.author.firstName} ${obj.author.lastName}`} />
+                  <Avatar
+                    alt={`${obj.author?.firstName} ${obj.author?.lastName}`}
+                    src={obj.author?.avatarUrl ? `${import.meta.env.VITE_API_BASE_URL}/${obj.author.avatarUrl}` : undefined}
+                  />
                 )}
               </ListItemAvatar>
               {isLoading ? (
@@ -101,11 +104,11 @@ export const CommentsBlock = ({
                   ) : (
                     <>
                       <ListItemText
-                        primary={`${obj.author.firstName} ${obj.author.lastName}`}
+                        primary={`${obj.author?.firstName ?? ''} ${obj.author?.lastName ?? ''}`}
                         secondary={
                           <>
                             {obj.content}
-                            {obj.editedAt && (
+                            {obj.editedAt ? (
                               <Typography
                                 component="span"
                                 variant="caption"
@@ -114,13 +117,13 @@ export const CommentsBlock = ({
                               >
                                 (изменено)
                               </Typography>
-                            )}
+                            ) : null}
                           </>
                         }
                         style={{ flexGrow: 1 }}
                       />
                       <div style={{ display: 'flex', marginLeft: 16 }}>
-                        {obj.author.id === currentUserId && (
+                        {obj.author?.id === currentUserId ? (
                           <IconButton
                             onClick={() => handleStartEdit(obj.id, obj.content)}
                             size="small"
@@ -128,8 +131,8 @@ export const CommentsBlock = ({
                           >
                             <EditIcon fontSize="small" />
                           </IconButton>
-                        )}
-                        {(obj.author.id === currentUserId || isAdmin) && (
+                        ) : null}
+                        {(obj.author?.id === currentUserId || isAdmin) ? (
                           <IconButton
                             onClick={() => onDeleteComment?.(obj.id)}
                             size="small"
@@ -137,7 +140,7 @@ export const CommentsBlock = ({
                           >
                             <DeleteIcon fontSize="small" />
                           </IconButton>
-                        )}
+                        ) : null}
                       </div>
                     </>
                   )}

@@ -141,7 +141,7 @@ const MainPage = () => {
                   key={news.id}
                   id={news.id}
                   title={news.title}
-                  image={`${import.meta.env.VITE_API_BASE_URL}${news.image}`}
+                  image={`${import.meta.env.VITE_API_BASE_URL}/${news.image}`}
                   author={news.author}
                   publishedAt={news.publishedAt}
                   likesCount={150}

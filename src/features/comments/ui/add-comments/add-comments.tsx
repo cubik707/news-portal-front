@@ -27,7 +27,7 @@ export const AddComments = ({ newsId }: AddCommentsProps) => {
       <div className={styles.root}>
         <Avatar
           classes={{ root: styles.avatar }}
-          src={`${import.meta.env.VITE_API_BASE_URL}${user!.avatarUrl}`}
+          src={`${import.meta.env.VITE_API_BASE_URL}/${user!.avatarUrl}`}
         />
         <div className={styles.form}>
           <TextField

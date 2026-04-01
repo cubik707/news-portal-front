@@ -43,9 +43,9 @@ const NewsPost = ({
   const onClickRemove = useCallback(async () => {
     try {
       await deleteNews(id).unwrap();
-    } catch (error: any) {
-      const message =
-        error?.data?.message || error?.error || 'Произошла ошибка при удалении новости';
+    } catch (error) {
+      const err = error as { data?: { message?: string }; error?: string };
+      const message = err?.data?.message || err?.error || 'Произошла ошибка при удалении новости';
       dispatch(setAppError({ error: message }));
     }
   }, [deleteNews]);

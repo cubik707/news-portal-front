@@ -19,7 +19,7 @@ export const UserInfo = ({
     <div className={styles.root}>
       <img
         className={styles.avatar}
-        src={`${import.meta.env.VITE_API_BASE_URL}${avatarUrl}` || '/noavatar.png'}
+        src={avatarUrl ? `${import.meta.env.VITE_API_BASE_URL}/${avatarUrl}` : '/noavatar.png'}
         alt={fullName}
       />
       <div className={styles.userDetails}>

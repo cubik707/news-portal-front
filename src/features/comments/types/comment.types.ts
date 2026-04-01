@@ -3,6 +3,7 @@ export type CommentAuthor = {
   username: string;
   firstName: string;
   lastName: string;
+  avatarUrl?: string;
 };
 
 export type Comment = {
