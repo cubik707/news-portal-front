@@ -141,6 +141,20 @@ export const CommentsBlock = ({
                                 (изменено)
                               </Typography>
                             ) : null}
+                            <Typography
+                              component="span"
+                              variant="caption"
+                              color="text.secondary"
+                              sx={{ display: 'block', mt: 0.5 }}
+                            >
+                              {new Date(obj.createdAt).toLocaleString('ru-RU', {
+                                day: '2-digit',
+                                month: '2-digit',
+                                year: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit',
+                              })}
+                            </Typography>
                           </>
                         }
                         style={{ flexGrow: 1 }}
