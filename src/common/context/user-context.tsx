@@ -13,5 +13,4 @@ export const UserContext = createContext<UserContextType>({
   error: null,
 });
 
-
 export const useUser = () => useContext(UserContext);

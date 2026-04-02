@@ -1,45 +1,40 @@
-
-import ListItem from "@mui/material/ListItem";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import Avatar from "@mui/material/Avatar";
-import ListItemText from "@mui/material/ListItemText";
-import Divider from "@mui/material/Divider";
-import List from "@mui/material/List";
-import Skeleton from "@mui/material/Skeleton";
+import ListItem from '@mui/material/ListItem';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import Avatar from '@mui/material/Avatar';
+import ListItemText from '@mui/material/ListItemText';
+import Divider from '@mui/material/Divider';
+import List from '@mui/material/List';
+import Skeleton from '@mui/material/Skeleton';
 import { Fragment, ReactNode, useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import { SideBlock } from '../../../tags/ui/side-block.tsx';
 import IconButton from '@mui/material/IconButton';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Clear';
-import { Button, TextField } from '@mui/material';
-type CommentUser = {
-  fullName: string;
-  avatarUrl?: string;
-}
-
-type CommentItem = {
-  id?: string;
-  user: CommentUser;
-  text: string;
-}
+import { Button, TextField, Typography } from '@mui/material';
+import { Comment } from '../../types/comment.types.ts';
 
 type CommentsBlockProps = {
-  items: CommentItem[];
+  items: Comment[];
   children?: ReactNode;
   isLoading?: boolean;
-  isEditable?: boolean;
+  currentUserId?: string;
+  isAdmin?: boolean;
+  showNewsContext?: boolean;
   onEditComment?: (commentId: string, newText: string) => void;
   onDeleteComment?: (commentId: string) => void;
-}
+};
 
 export const CommentsBlock = ({
-                                items,
-                                children,
-                                isLoading = true,
-                                isEditable = false,
-                                onEditComment,
-                                onDeleteComment,
-                              }: CommentsBlockProps) => {
+  items,
+  children,
+  isLoading = true,
+  currentUserId,
+  isAdmin = false,
+  showNewsContext = false,
+  onEditComment,
+  onDeleteComment,
+}: CommentsBlockProps) => {
   const [editingCommentId, setEditingCommentId] = useState<string | null>(null);
   const [editedText, setEditedText] = useState('');
 
@@ -65,49 +60,51 @@ export const CommentsBlock = ({
     <SideBlock title="Комментарии">
       <List>
         {(isLoading ? [...Array(5)] : items).map((obj, index) => (
-          <Fragment key={index}>
+          <Fragment key={isLoading ? index : obj.id}>
             <ListItem alignItems="flex-start">
               <ListItemAvatar>
                 {isLoading ? (
                   <Skeleton variant="circular" width={40} height={40} />
                 ) : (
-                  <Avatar alt={obj.user.fullName} src={obj.user.avatarUrl} />
+                  <Avatar
+                    alt={`${obj.author?.firstName} ${obj.author?.lastName}`}
+                    src={
+                      obj.author?.avatarUrl
+                        ? `${import.meta.env.VITE_API_BASE_URL}/${obj.author.avatarUrl}`
+                        : undefined
+                    }
+                  />
                 )}
               </ListItemAvatar>
               {isLoading ? (
-                <div style={{ display: "flex", flexDirection: "column" }}>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
                   <Skeleton variant="text" height={25} width={120} />
                   <Skeleton variant="text" height={18} width={230} />
                 </div>
               ) : (
-                <div style={{
-                  display: 'flex',
-                  width: '100%',
-                  justifyContent: 'space-between',
-                  alignItems: 'flex-start'
-                }}>
+                <div
+                  style={{
+                    display: 'flex',
+                    width: '100%',
+                    justifyContent: 'space-between',
+                    alignItems: 'flex-start',
+                  }}
+                >
                   {editingCommentId === obj.id ? (
                     <div style={{ flexGrow: 1, marginRight: 16 }}>
                       <TextField
                         value={editedText}
-                        onChange={(e) => setEditedText(e.target.value)}
+                        onChange={e => setEditedText(e.target.value)}
                         fullWidth
                         multiline
                         variant="outlined"
+                        inputProps={{ 'aria-label': 'Редактировать текст комментария' }}
                       />
                       <div style={{ marginTop: 8, display: 'flex', gap: 8 }}>
-                        <Button
-                          variant="contained"
-                          size="small"
-                          onClick={handleSaveEdit}
-                        >
+                        <Button variant="contained" size="small" onClick={handleSaveEdit}>
                           Сохранить
                         </Button>
-                        <Button
-                          variant="outlined"
-                          size="small"
-                          onClick={handleCancelEdit}
-                        >
+                        <Button variant="outlined" size="small" onClick={handleCancelEdit}>
                           Отмена
                         </Button>
                       </div>
@@ -115,28 +112,75 @@ export const CommentsBlock = ({
                   ) : (
                     <>
                       <ListItemText
-                        primary={obj.user.fullName}
-                        secondary={obj.text}
+                        primary={
+                          showNewsContext && obj.news ? (
+                            <RouterLink
+                              to={`/news/${obj.news.id}`}
+                              style={{
+                                fontSize: '0.85rem',
+                                color: 'inherit',
+                                textDecoration: 'underline',
+                              }}
+                            >
+                              {obj.news.title}
+                            </RouterLink>
+                          ) : (
+                            `${obj.author?.firstName ?? ''} ${obj.author?.lastName ?? ''}`
+                          )
+                        }
+                        secondary={
+                          <>
+                            {obj.content}
+                            {obj.editedAt ? (
+                              <Typography
+                                component="span"
+                                variant="caption"
+                                color="text.secondary"
+                                sx={{ ml: 1 }}
+                              >
+                                (изменено)
+                              </Typography>
+                            ) : null}
+                            <Typography
+                              component="span"
+                              variant="caption"
+                              color="text.secondary"
+                              sx={{ display: 'block', mt: 0.5 }}
+                            >
+                              {new Date(obj.createdAt).toLocaleString('ru-RU', {
+                                day: '2-digit',
+                                month: '2-digit',
+                                year: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit',
+                              })}
+                            </Typography>
+                          </>
+                        }
                         style={{ flexGrow: 1 }}
                       />
-                      {isEditable && (
-                        <div style={{ display: 'flex', marginLeft: 16 }}>
+                      <div style={{ display: 'flex', marginLeft: 16 }}>
+                        {obj.author?.id === currentUserId ? (
                           <IconButton
-                            onClick={() => handleStartEdit(obj.id!, obj.text)}
+                            aria-label="Редактировать комментарий"
+                            onClick={() => handleStartEdit(obj.id, obj.content)}
                             size="small"
                             color="primary"
                           >
-                            <EditIcon fontSize="small" />
+                            <EditIcon fontSize="small" aria-hidden="true" />
                           </IconButton>
+                        ) : null}
+                        {obj.author?.id === currentUserId || isAdmin ? (
                           <IconButton
-                            onClick={() => onDeleteComment?.(obj.id!)}
+                            aria-label="Удалить комментарий"
+                            onClick={() => onDeleteComment?.(obj.id)}
                             size="small"
                             color="error"
                           >
-                            <DeleteIcon fontSize="small" />
+                            <DeleteIcon fontSize="small" aria-hidden="true" />
                           </IconButton>
-                        </div>
-                      )}
+                        ) : null}
+                      </div>
                     </>
                   )}
                 </div>

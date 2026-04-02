@@ -14,32 +14,38 @@ export const DraftedNewsLayout = () => {
 
   // Временные заглушки для демонстрации
   const mockAdminComments = [
-    { comment: "Ваша новость одобрена администратором", approved: true },
-    { comment: "Пожалуйста, добавьте более качественные фото", approved: false }
+    { comment: 'Ваша новость одобрена администратором', approved: true },
+    { comment: 'Пожалуйста, добавьте более качественные фото', approved: false },
   ];
 
-  const newsList = data?.data?.map((news, index) => ({
-    ...news,
-    adminComment: mockAdminComments[index % 2].comment,
-    isApproved: mockAdminComments[index % 2].approved
-  })) ?? [];
+  const newsList =
+    data?.data?.map((news, index) => ({
+      ...news,
+      adminComment: mockAdminComments[index % 2].comment,
+      isApproved: mockAdminComments[index % 2].approved,
+    })) ?? [];
 
   return (
-    <Box sx={{
-      display: 'flex',
-      gap: 8,
-      flexDirection: 'column',
-    }}>
+    <Box
+      sx={{
+        display: 'flex',
+        gap: 8,
+        flexDirection: 'column',
+      }}
+    >
       {(isNewsLoading ? Array(5).fill(null) : newsList).map((news, index) =>
         isNewsLoading ? (
           <NewsSkeleton key={index} />
         ) : (
-          <Box key={news.id} sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 2,
-            position: 'relative'
-          }}>
+          <Box
+            key={news.id}
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 2,
+              position: 'relative',
+            }}
+          >
             <NewsPost
               id={news.id}
               title={news.title}
@@ -52,17 +58,19 @@ export const DraftedNewsLayout = () => {
             />
 
             {/* Блок с комментарием администратора и кнопкой */}
-            <Box sx={{
-              p: 3,
-              border: '2px solid',
-              borderColor: news.isApproved ? 'success.light' : 'error.light',
-              borderRadius: 2,
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              gap: 2,
-              boxShadow: 1
-            }}>
+            <Box
+              sx={{
+                p: 3,
+                border: '2px solid',
+                borderColor: news.isApproved ? 'success.light' : 'error.light',
+                borderRadius: 2,
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                gap: 2,
+                boxShadow: 1,
+              }}
+            >
               <Typography
                 variant="body1"
                 color={news.isApproved ? 'success.dark' : 'error.dark'}

@@ -16,15 +16,18 @@ export const CheckNews = () => {
         isNewsLoading ? (
           <NewsSkeleton key={index} />
         ) : (
-          <Box key={news.id} sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 2,
-            position: 'relative',
-            border: '1px solid #eee',
-            p: 3,
-            borderRadius: 2
-          }}>
+          <Box
+            key={news.id}
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 2,
+              position: 'relative',
+              border: '1px solid #eee',
+              p: 3,
+              borderRadius: 2,
+            }}
+          >
             <NewsPost
               id={news.id}
               title={news.title}

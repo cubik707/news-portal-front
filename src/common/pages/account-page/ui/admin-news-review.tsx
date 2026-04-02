@@ -51,26 +51,16 @@ export const AdminNewsReview = () => {
           rows={4}
           label="Комментарий модератора"
           value={comment}
-          onChange={(e) => setComment(e.target.value)}
+          onChange={e => setComment(e.target.value)}
           sx={{ mb: 3 }}
         />
 
         <Box sx={{ display: 'flex', gap: 2 }}>
-          <Button
-            variant="contained"
-            color="success"
-            onClick={handleApprove}
-            sx={{ px: 4 }}
-          >
+          <Button variant="contained" color="success" onClick={handleApprove} sx={{ px: 4 }}>
             Одобрить
           </Button>
 
-          <Button
-            variant="contained"
-            color="error"
-            onClick={handleReject}
-            sx={{ px: 4 }}
-          >
+          <Button variant="contained" color="error" onClick={handleReject} sx={{ px: 4 }}>
             Отклонить
           </Button>
         </Box>

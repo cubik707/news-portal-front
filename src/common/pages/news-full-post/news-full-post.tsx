@@ -7,14 +7,27 @@ import { useGetOneNewsQuery } from '../../../features/news/api/news-api.ts';
 import { useParams } from 'react-router-dom';
 import { NewsSkeleton } from '../../../features/news/ui/news-post/news-post-skeleton.tsx';
 import Markdown from 'react-markdown';
-
+import {
+  useGetCommentsByNewsQuery,
+  useUpdateCommentMutation,
+  useDeleteCommentMutation,
+} from '../../../features/comments/api/comments-api.ts';
+import { useUser } from '../../context/user-context.tsx';
+import { UserRole } from '../../../features/user/types/user-role.enum.ts';
 
 export const NewsFullPost = () => {
-  const { id } = useParams();
-  const { data, isLoading, error } = useGetOneNewsQuery(Number(id));
-  const news = data?.data;
+  const { id } = useParams<{ id: string }>();
+  const { data, isLoading, error } = useGetOneNewsQuery(id!);
+  const { data: commentsData, isLoading: commentsLoading } = useGetCommentsByNewsQuery(id!);
+  const [updateComment] = useUpdateCommentMutation();
+  const [deleteComment] = useDeleteCommentMutation();
+  const { user } = useUser();
 
-  if(isLoading){
+  const news = data?.data;
+  const comments = commentsData?.data ?? [];
+  const isAdmin = user?.roles.includes(UserRole.ADMIN) ?? false;
+
+  if (isLoading) {
     return <NewsSkeleton />;
   }
 
@@ -22,6 +35,13 @@ export const NewsFullPost = () => {
     return <div>Ошибка при загрузке новости</div>;
   }
 
+  const handleEditComment = (commentId: string, newText: string) => {
+    updateComment({ id: commentId, content: newText, newsId: id! });
+  };
+
+  const handleDeleteComment = (commentId: string) => {
+    deleteComment({ id: commentId, newsId: id! });
+  };
 
   return (
     <>
@@ -30,50 +50,25 @@ export const NewsFullPost = () => {
         <NewsPost
           id={news!.id}
           title={news!.title}
-          image={`${import.meta.env.VITE_API_BASE_URL}${news!.image}`}
+          image={`${import.meta.env.VITE_API_BASE_URL}/${news!.image}`}
           author={news!.author}
           publishedAt={news!.publishedAt}
           likesCount={150}
-          commentsCount={3}
+          commentCount={comments.length}
           tags={news!.tags}
           isFullPost
         >
           <Markdown>{news!.content}</Markdown>
         </NewsPost>
         <CommentsBlock
-          items={[
-            {
-              user: {
-                fullName: 'Вася Пупкин',
-                avatarUrl: 'https://mui.com/static/images/avatar/1.jpg',
-              },
-              text: 'Это тестовый комментарий 555555',
-            },
-            {
-              user: {
-                fullName: 'Иван Иванов',
-                avatarUrl: 'https://mui.com/static/images/avatar/2.jpg',
-              },
-              text: 'When displaying three lines or more, the avatar is not aligned at the top. You should set the prop to align the avatar at the top',
-            },
-            {
-              user: {
-                fullName: 'Людмила Кравченко',
-                avatarUrl: 'https://mui.com/static/images/avatar/3.jpg',
-              },
-              text: 'Еще один тестовый комментарий для примера работы системы',
-            },
-            {
-              user: {
-                fullName: 'Владислава Демидовец',
-                avatarUrl: '',
-              },
-              text: 'Вау! Так необычно!!!',
-            },
-          ]}
-          isLoading={false}
+          items={comments}
+          isLoading={commentsLoading}
+          currentUserId={user?.id}
+          isAdmin={isAdmin}
+          onEditComment={handleEditComment}
+          onDeleteComment={handleDeleteComment}
         >
-          <AddComments />
+          <AddComments newsId={id!} />
         </CommentsBlock>
       </Container>
     </>

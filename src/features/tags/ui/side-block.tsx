@@ -1,12 +1,12 @@
-import styles from "./side-block.module.scss";
-import Typography from "@mui/material/Typography";
-import Paper from "@mui/material/Paper";
+import styles from './side-block.module.scss';
+import Typography from '@mui/material/Typography';
+import Paper from '@mui/material/Paper';
 import { ReactNode } from 'react';
 
 type SideBlockProps = {
   title: string;
   children: ReactNode;
-}
+};
 
 export const SideBlock = ({ title, children }: SideBlockProps) => {
   return (

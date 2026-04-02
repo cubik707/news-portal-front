@@ -1,10 +1,10 @@
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import TagIcon from "@mui/icons-material/Tag";
-import ListItemText from "@mui/material/ListItemText";
-import Skeleton from "@mui/material/Skeleton";
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import TagIcon from '@mui/icons-material/Tag';
+import ListItemText from '@mui/material/ListItemText';
+import Skeleton from '@mui/material/Skeleton';
 import { SideBlock } from './side-block.tsx';
 import { Tag } from '../types/tags.types.ts';
 
@@ -13,14 +13,14 @@ type TagsBlockProps = {
   isLoading?: boolean;
   selectedTagId?: string | null;
   onTagClick?: (tagId: string) => void;
-}
+};
 
 export const TagsBlock = ({
-                            items,
-                            isLoading = true,
-                            selectedTagId = null,
-                            onTagClick
-                          }: TagsBlockProps) => {
+  items,
+  isLoading = true,
+  selectedTagId = null,
+  onTagClick,
+}: TagsBlockProps) => {
   const handleClick = (tagId: string) => {
     if (onTagClick) {
       onTagClick(tagId);
@@ -39,8 +39,8 @@ export const TagsBlock = ({
               backgroundColor: selectedTagId === tag?.id ? 'action.selected' : 'inherit',
               borderRadius: 2,
               '&:hover': {
-                backgroundColor: 'action.hover'
-              }
+                backgroundColor: 'action.hover',
+              },
             }}
           >
             <ListItemButton
@@ -50,8 +50,8 @@ export const TagsBlock = ({
                 borderRadius: 2,
                 '&.Mui-disabled': {
                   opacity: 1,
-                  cursor: 'not-allowed'
-                }
+                  cursor: 'not-allowed',
+                },
               }}
             >
               <ListItemIcon sx={{ minWidth: 36 }}>
@@ -69,8 +69,8 @@ export const TagsBlock = ({
                   sx={{
                     '& .MuiListItemText-primary': {
                       fontWeight: selectedTagId === tag.id ? 600 : 'normal',
-                      color: selectedTagId === tag.id ? 'primary.main' : 'text.primary'
-                    }
+                      color: selectedTagId === tag.id ? 'primary.main' : 'text.primary',
+                    },
                   }}
                 />
               )}

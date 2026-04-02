@@ -1,1 +1,1 @@
-export * from './http-methods.ts'
+export * from './http-methods.ts';

@@ -5,7 +5,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import {
   Button,
   Container,
-  FormControl, FormHelperText,
+  FormControl,
+  FormHelperText,
   InputLabel,
   LinearProgress,
   MenuItem,
@@ -18,9 +19,18 @@ import 'easymde/dist/easymde.min.css';
 import styles from './edit-news-post.module.scss';
 import { useAppDispatch } from '../../../hooks';
 import { useUser } from '../../../context/user-context.tsx';
-import { useGetOneNewsQuery, useUpdateNewsMutation } from '../../../../features/news/api/news-api.ts';
-import { createNewsSchema, NewsFormData } from '../../../../features/news/model/create-news-schema.ts';
-import { useDeleteImageMutation, useUploadImageMutation } from '../../../../features/file-upload/api/upload-api.ts';
+import {
+  useGetOneNewsQuery,
+  useUpdateNewsMutation,
+} from '../../../../features/news/api/news-api.ts';
+import {
+  createNewsSchema,
+  NewsFormData,
+} from '../../../../features/news/model/create-news-schema.ts';
+import {
+  useDeleteImageMutation,
+  useUploadImageMutation,
+} from '../../../../features/file-upload/api/upload-api.ts';
 import { useGetAllCategoriesQuery } from '../../../../features/category/api/categoryApi.ts';
 import { setAppError } from '../../../../app/app-slice.ts';
 import { Header } from '../../../components/header/header.tsx';
@@ -108,7 +118,7 @@ export const EditNewsPost = () => {
     }
   };
 
-  const onSubmit: SubmitHandler<NewsFormData> = async (data) => {
+  const onSubmit: SubmitHandler<NewsFormData> = async data => {
     try {
       if (!user) {
         dispatch(setAppError({ error: 'Пользователь не авторизован' }));
@@ -131,14 +141,17 @@ export const EditNewsPost = () => {
     }
   };
 
-  const options = useMemo(() => ({
-    spellChecker: false,
-    maxHeight: '400px',
-    autofocus: true,
-    placeholder: 'Введите текст...',
-    status: false,
-    autosave: { enabled: true, delay: 1000, uniqueId: 'edit-post-editor' },
-  }), []);
+  const options = useMemo(
+    () => ({
+      spellChecker: false,
+      maxHeight: '400px',
+      autofocus: true,
+      placeholder: 'Введите текст...',
+      status: false,
+      autosave: { enabled: true, delay: 1000, uniqueId: 'edit-post-editor' },
+    }),
+    []
+  );
 
   if (isNewsLoading || isUpdateNewsLoading) return <LinearProgress />;
 
@@ -161,8 +174,11 @@ export const EditNewsPost = () => {
                 <Button sx={{ m: 2 }} variant="contained" color="error" onClick={handleDeleteImage}>
                   Удалить
                 </Button>
-                <img className={styles.image} src={`${import.meta.env.VITE_API_BASE_URL}${watch('image')}`}
-                     alt="Uploaded" />
+                <img
+                  className={styles.image}
+                  src={`${import.meta.env.VITE_API_BASE_URL}${watch('image')}`}
+                  alt="Uploaded"
+                />
               </>
             )}
 
@@ -172,11 +188,7 @@ export const EditNewsPost = () => {
                 name="categoryId"
                 control={control}
                 render={({ field }) => (
-                  <Select
-                    {...field}
-                    label="Категория"
-                    value={field.value ?? ''}
-                  >
+                  <Select {...field} label="Категория" value={field.value ?? ''}>
                     {categories.map(category => (
                       <MenuItem key={category.id} value={category.id}>
                         {category.name}
@@ -185,7 +197,9 @@ export const EditNewsPost = () => {
                   </Select>
                 )}
               />
-              {errors.categoryId && <FormHelperText error>{errors.categoryId.message}</FormHelperText>}
+              {errors.categoryId && (
+                <FormHelperText error>{errors.categoryId.message}</FormHelperText>
+              )}
             </FormControl>
 
             <TextField
@@ -212,11 +226,7 @@ export const EditNewsPost = () => {
               name="content"
               control={control}
               render={({ field }) => (
-                <SimpleMDE
-                  {...field}
-                  className={styles.editor}
-                  options={options}
-                />
+                <SimpleMDE {...field} className={styles.editor} options={options} />
               )}
             />
             {errors.content && <FormHelperText error>{errors.content.message}</FormHelperText>}
@@ -225,7 +235,9 @@ export const EditNewsPost = () => {
               <Button type="submit" variant="contained" size="large" disabled={isSubmitting}>
                 Обновить
               </Button>
-              <Button size="large" onClick={() => navigate(-1)}>Отмена</Button>
+              <Button size="large" onClick={() => navigate(-1)}>
+                Отмена
+              </Button>
             </div>
           </form>
         </Paper>

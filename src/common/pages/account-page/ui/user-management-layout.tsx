@@ -4,8 +4,10 @@ import { useState } from 'react';
 import { Box, Pagination } from '@mui/material';
 import {
   useApproveUserMutation,
-  useAssignRoleMutation, useDeleteUserMutation,
-  useGetUsersQuery, useRemoveRoleMutation,
+  useAssignRoleMutation,
+  useDeleteUserMutation,
+  useGetUsersQuery,
+  useRemoveRoleMutation,
 } from '../../../../features/user/api/userApi.ts';
 import { useAppDispatch } from '../../../hooks';
 import { setAppError } from '../../../../app/app-slice.ts';
@@ -34,7 +36,7 @@ const UserManagementLayout = () => {
     }
   };
 
-    const handleDisapprove = async (userId: number) => {
+  const handleDisapprove = async (userId: number) => {
     try {
       await deleteUser(userId).unwrap();
       await refetch();
@@ -43,7 +45,7 @@ const UserManagementLayout = () => {
         error?.data?.message || error?.error || 'Произошла ошибка при удалении пользователя';
       dispatch(setAppError({ error: message }));
     }
-  }
+  };
 
   const handleRoleChange = async (userId: number, role: UserRole, checked: boolean) => {
     try {
@@ -64,10 +66,7 @@ const UserManagementLayout = () => {
     setPage(newPage);
   };
 
-  const paginatedUsers = users.slice(
-    (page - 1) * USERS_PER_PAGE,
-    page * USERS_PER_PAGE
-  );
+  const paginatedUsers = users.slice((page - 1) * USERS_PER_PAGE, page * USERS_PER_PAGE);
 
   const pageCount = Math.ceil(users.length / USERS_PER_PAGE);
 
@@ -80,12 +79,7 @@ const UserManagementLayout = () => {
         onRoleChange={handleRoleChange}
       />
       <Box display="flex" justifyContent="center" mt={4}>
-        <Pagination
-          count={pageCount}
-          page={page}
-          onChange={handlePageChange}
-          color="primary"
-        />
+        <Pagination count={pageCount} page={page} onChange={handlePageChange} color="primary" />
       </Box>
     </>
   );

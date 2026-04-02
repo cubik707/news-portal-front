@@ -19,8 +19,6 @@ import { ErrorResponse } from '../../../../common/types';
 import { useNavigate } from 'react-router-dom';
 import registerSchema from '../../model/register-schema.ts';
 
-
-
 const RegisterPage = () => {
   const [register, { isLoading }] = useRegisterMutation();
   const [registerError, setRegisterError] = useState<string | null>(null);
@@ -45,23 +43,23 @@ const RegisterPage = () => {
     },
   });
 
-  const onSubmit = async (data: Omit<RegisterArgs, 'surname'> & {
-    surname?: string;
-  }) => {
+  const onSubmit = async (
+    data: Omit<RegisterArgs, 'surname'> & {
+      surname?: string;
+    }
+  ) => {
     try {
       const submitData = {
         ...data,
         surname: data.surname || '',
       };
       const res = await register(submitData).unwrap();
-      alert(res.data)
+      alert(res.data);
       navigate('/login');
     } catch (err: any) {
       const errorData = err as { data?: ErrorResponse };
 
-      setRegisterError(
-        errorData?.data?.message || 'Ошибка при регистрации.',
-      );
+      setRegisterError(errorData?.data?.message || 'Ошибка при регистрации.');
     } finally {
       reset({ ...data, password: '' });
     }
@@ -78,7 +76,6 @@ const RegisterPage = () => {
           overflow: 'hidden',
         }}
       >
-
         {isLoading && (
           <LinearProgress
             sx={{
@@ -257,7 +254,7 @@ const RegisterPage = () => {
             </Grid>
 
             {registerError && (
-              <Typography color="error" sx={{marginBottom: '1rem'}}>
+              <Typography color="error" sx={{ marginBottom: '1rem' }}>
                 {registerError}
               </Typography>
             )}

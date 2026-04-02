@@ -7,10 +7,21 @@ import 'easymde/dist/easymde.min.css';
 import styles from './add-news-post.module.scss';
 import { ChangeEvent, useMemo, useRef } from 'react';
 import { Header } from '../../components/header/header.tsx';
-import { Container, FormControl, FormHelperText, InputLabel, LinearProgress, MenuItem, Select } from '@mui/material';
+import {
+  Container,
+  FormControl,
+  FormHelperText,
+  InputLabel,
+  LinearProgress,
+  MenuItem,
+  Select,
+} from '@mui/material';
 import { useAppDispatch } from '../../hooks';
 import { setAppError } from '../../../app/app-slice.ts';
-import { useDeleteImageMutation, useUploadImageMutation } from '../../../features/file-upload/api/upload-api.ts';
+import {
+  useDeleteImageMutation,
+  useUploadImageMutation,
+} from '../../../features/file-upload/api/upload-api.ts';
 import { useGetAllCategoriesQuery } from '../../../features/category/api/categoryApi.ts';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { createNewsSchema, NewsFormData } from '../../../features/news/model/create-news-schema.ts';
@@ -18,7 +29,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useUser } from '../../context/user-context.tsx';
 import { useCreateNewsMutation } from '../../../features/news/api/news-api.ts';
 import { useNavigate } from 'react-router-dom';
-
 
 export const AddNewsPost = () => {
   const {
@@ -87,14 +97,14 @@ export const AddNewsPost = () => {
       if (inputFileRef.current) {
         inputFileRef.current.value = '';
       }
-    } catch (error: any){
+    } catch (error: any) {
       const message =
         error?.data?.message || error?.error || 'Произошла ошибка при удалении изображения';
       dispatch(setAppError({ error: message }));
     }
   };
 
-  const onSubmit: SubmitHandler<NewsFormData> = async (data) => {
+  const onSubmit: SubmitHandler<NewsFormData> = async data => {
     try {
       const newsData = {
         ...data,
@@ -129,22 +139,24 @@ export const AddNewsPost = () => {
         uniqueId: 'add-post-editor',
       },
     }),
-    [],
+    []
   );
 
   return (
     <>
       <Header />
       <Container sx={{ marginTop: 2 }}>
-        {(isUpLoading || isDeleteImageLoading) && (<LinearProgress
-          sx={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            zIndex: 9999,
-          }}
-        />)}
+        {(isUpLoading || isDeleteImageLoading) && (
+          <LinearProgress
+            sx={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              zIndex: 9999,
+            }}
+          />
+        )}
         <Paper style={{ padding: 30 }}>
           <form onSubmit={handleSubmit(onSubmit)}>
             <Button onClick={() => inputFileRef.current?.click()} variant="outlined" size="large">
@@ -153,11 +165,19 @@ export const AddNewsPost = () => {
             <input ref={inputFileRef} type="file" onChange={handleChangeFile} hidden />
             {watch('image') && (
               <>
-                <Button sx={{ m: 2 }} variant="contained" color="error" onClick={onClickRemoveImage}>
+                <Button
+                  sx={{ m: 2 }}
+                  variant="contained"
+                  color="error"
+                  onClick={onClickRemoveImage}
+                >
                   Удалить
                 </Button>
-                <img className={styles.image} src={`${import.meta.env.VITE_API_BASE_URL}${watch('image')}`}
-                     alt="Uploaded" />
+                <img
+                  className={styles.image}
+                  src={`${import.meta.env.VITE_API_BASE_URL}/${watch('image')}`}
+                  alt="Uploaded"
+                />
               </>
             )}
             <br />
@@ -168,14 +188,9 @@ export const AddNewsPost = () => {
                 name="categoryId"
                 control={control}
                 render={({ field }) => (
-                  <Select
-                    {...field}
-                    label="Категория"
-                    value={field.value || ''}
-                    required
-                  >
+                  <Select {...field} label="Категория" value={field.value || ''} required>
                     {isCategoriesLoading && <MenuItem disabled>Загрузка категорий...</MenuItem>}
-                    {categories.map((category) => (
+                    {categories.map(category => (
                       <MenuItem key={category.id} value={category.id}>
                         {category.name}
                       </MenuItem>
@@ -200,17 +215,14 @@ export const AddNewsPost = () => {
               classes={{ root: styles.tags }}
               variant="standard"
               placeholder="Тэги"
-              fullWidth />
+              fullWidth
+            />
 
             <Controller
               name="content"
               control={control}
               render={({ field }) => (
-                <SimpleMDE
-                  {...field}
-                  className={styles.editor}
-                  options={options}
-                />
+                <SimpleMDE {...field} className={styles.editor} options={options} />
               )}
             />
             {errors.content && <FormHelperText error>{errors.content.message}</FormHelperText>}
@@ -219,7 +231,8 @@ export const AddNewsPost = () => {
                 type="submit"
                 disabled={isSubmitting || isUpLoading}
                 size="large"
-                variant="contained">
+                variant="contained"
+              >
                 Сохранить
               </Button>
               <a href="/">
@@ -228,7 +241,8 @@ export const AddNewsPost = () => {
             </div>
           </form>
         </Paper>
-      </Container>;
+      </Container>
+      ;
     </>
   );
 };

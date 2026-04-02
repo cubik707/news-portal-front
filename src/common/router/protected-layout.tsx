@@ -16,5 +16,5 @@ export const ProtectedLayout = () => {
     return <Navigate to="/login" replace />;
   }
 
-  return <Outlet/>;
+  return <Outlet />;
 };
